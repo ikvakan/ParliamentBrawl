@@ -1,0 +1,16 @@
+
+.pane{
+    -fx-background-color: #33ccff;
+}
+
+.hbox{
+    -fx-background-color: #cccccc;
+}
+
+#pnPlayer{
+    -fx-background-color: #ffff66ff;
+}
+
+#pnCard{
+    -fx-background-color: #cccccc;
+}
