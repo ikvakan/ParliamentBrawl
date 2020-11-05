@@ -2,18 +2,22 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.controller.CardTableController">
    <bottom>
       <Pane fx:id="pnPlayer" prefHeight="230.0" prefWidth="600.0" stylesheets="@../style/mainStyle.css" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="btnPlayerDeck" layoutX="59.0" layoutY="40.0" mnemonicParsing="false" onAction="#drawCardFromDeck" prefHeight="150.0" prefWidth="100.0" text="Deck" />
-            <GridPane fx:id="gridPlayer" alignment="CENTER" layoutX="351.0" layoutY="15.0" prefHeight="200.0" prefWidth="600.0">
+            <GridPane fx:id="gridPlayer" alignment="CENTER" layoutX="300.0" layoutY="15.0" prefHeight="200.0" prefWidth="600.0">
               <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="155.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
@@ -28,13 +32,56 @@
                   <Insets />
                </opaqueInsets>
             </GridPane>
+            <VBox id="vBoxPlayers" alignment="CENTER" layoutX="1005.0" layoutY="15.0" prefHeight="200.0" prefWidth="150.0" spacing="20.0" stylesheets="@../style/mainStyle.css">
+               <children>
+                  <Label fx:id="lbPlayerName" alignment="CENTER" text="Name">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="imagePlayer" fitHeight="94.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="lbPlayerHealtj" text="health" textFill="#eeeeee">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+               </children>
+            </VBox>
          </children>
       </Pane>
    </bottom>
    <top>
       <Pane fx:id="pnOpponent" prefHeight="230.0" prefWidth="600.0" styleClass="pane" stylesheets="@../style/mainStyle.css" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="55.0" layoutY="33.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="75.0" text="Button" />
+            <GridPane fx:id="gridOpponent" alignment="CENTER" layoutX="300.0" layoutY="25.0" prefHeight="200.0" prefWidth="600.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="155.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </GridPane>
+            <Button fx:id="btnOpponentDeck1" layoutX="69.0" layoutY="50.0" mnemonicParsing="false" onAction="#drawCardFromDeck" prefHeight="150.0" prefWidth="100.0" text="Deck" />
+            <VBox id="vBoxPlayers" alignment="CENTER" layoutX="1025.0" layoutY="15.0" prefHeight="200.0" prefWidth="150.0" spacing="20.0" stylesheets="@../style/mainStyle.css">
+               <children>
+                  <Label fx:id="lbOpponentName" alignment="CENTER" text="Name">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="imageOpponent" fitHeight="94.0" fitWidth="131.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="lbOpponentHealth" text="health" textFill="#eeeeee">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+               </children>
+            </VBox>
          </children>
       </Pane>
    </top>

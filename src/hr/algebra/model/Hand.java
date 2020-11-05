@@ -7,13 +7,13 @@ package hr.algebra.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
+
 
 /**
  *
  * @author IgorKvakan
  */
-public class Hand {
+public  class Hand  {
 
     private List<Card> hand;
 

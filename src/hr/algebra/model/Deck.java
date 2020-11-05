@@ -15,7 +15,7 @@ import java.util.Stack;
 public class Deck {
 
 
-    private static List<Card> deck;
+    private  List<Card> deck;
 
     public Deck() {
 
@@ -32,8 +32,8 @@ public class Deck {
         return deck;
     }
 
-    public static void clearCards() {
-        deck.clear();
+    public  void clearCards() {
+        this.deck.clear();
     }
 
     public void populateDeck(List<Card> newDeck) throws Exception {

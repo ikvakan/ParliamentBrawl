@@ -7,10 +7,18 @@
     -fx-background-color: #cccccc;
 }
 
-#pnPlayer{
+#pnPlayer,#pnOpponent{
     -fx-background-color: #ffff66ff;
 }
 
+
+
 #pnCard{
     -fx-background-color: #cccccc;
+}
+
+#vBoxPlayers{
+    -fx-border-color: black;
+    -fx-background-color:#3786db;
+    -fx-border-radius: 15px;
 }

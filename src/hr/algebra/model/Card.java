@@ -44,7 +44,7 @@ public  class Card {
     }
 
     private void createImage(String path) throws FileNotFoundException{
-        //this.image=new Image(new FileInputStream(path));
+       
         this.image=new SimpleObjectProperty<>(new Image(new FileInputStream(SRC_DIR + File.separator + path)));
     }
 
