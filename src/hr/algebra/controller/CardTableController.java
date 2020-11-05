@@ -14,7 +14,6 @@ import hr.algebra.model.Player;
 import hr.algebra.nodes.NodeUtils;
 import hr.algebra.repo.dal.Repository;
 import hr.algebra.repo.dal.RepositoryFactory;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -23,14 +22,16 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
+
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -50,6 +51,8 @@ public class CardTableController implements Initializable {
 
     private Deck opponentDeck;
     private Hand opponentHand;
+
+    private List<Card> cards;
 
     @FXML
     private Pane pnOpponent, pnPlayer;
@@ -71,11 +74,12 @@ public class CardTableController implements Initializable {
         try {
             initCardRepository();
             initObjects();
+            initDragAndDrop();
             //createCard();
             populateDeck();
             populateStartHand();
             createPlayers();
-            createHand();
+            createStartHand();
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
@@ -87,24 +91,6 @@ public class CardTableController implements Initializable {
 
     @FXML
     private void drawCardFromDeck(ActionEvent event) {
-
-    }
-
-    private void populateDeck() throws FileNotFoundException, Exception {
-
-        //deck.populateDeck(repository.selectCards());
-        playerDeck = new Deck(repository.selectCards());
-        playerDeck.shuffleCards();
-        opponentDeck = new Deck(repository.selectCards());
-        opponentDeck.shuffleCards();
-
-    }
-
-    private void populateStartHand() {
-        playerHand.setStartHand(playerDeck);
-        playerDeck.setDeckAfterPopulatingHand(playerHand);
-        opponentHand.setStartHand(opponentDeck);
-        opponentDeck.setDeckAfterPopulatingHand(opponentHand);
 
     }
 
@@ -128,51 +114,98 @@ public class CardTableController implements Initializable {
 
             player = new Player("Player 1");
             opponent = new Player("Player 2");
-            
-        } catch (ClassNotFoundException | NoSuchMethodException |SecurityException | InstantiationException 
+
+        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
                 | IllegalAccessException | InvocationTargetException | IllegalArgumentException ex) {
             Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
 
     }
 
-    private void createHand() {
+    private void initDragAndDrop() {
 
-        createPlayerHand();
-        createOpponentHand();
+        gridField.setOnDragOver((DragEvent event) -> {
+            Dragboard dragboard = event.getDragboard();
+
+            if (dragboard.hasContent(NodeUtils.CARD)) {
+                event.acceptTransferModes(TransferMode.ANY);
+            }
+
+            event.consume();
+        });
+
+        gridField.setOnDragDropped((event) -> {
+
+            boolean dragCompleted = false;
+
+            Dragboard dragboard = event.getDragboard();
+            if (dragboard.hasContent(NodeUtils.CARD)) {
+
+                Card copy = (Card) dragboard.getContent(NodeUtils.CARD);
+
+                try {
+                    Card card = new Card(copy.getTitle(), copy.getAttack(), copy.getDefense(), copy.getPicturePath());
+                    VBox vbox = createCard(card);
+                    gridField.getChildren().add(vbox);
+                    dragCompleted = true;
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+            event.setDropCompleted(dragCompleted);
+            event.consume();
+
+        });
 
     }
 
-    private void createPlayerHand() {
+    private void populateDeck() throws FileNotFoundException, Exception {
+
+        cards = repository.selectCards();
+        //deck.populateDeck(repository.selectCards());
+        playerDeck = new Deck(cards);
+        playerDeck.shuffleCards();
+        opponentDeck = new Deck(cards);
+        opponentDeck.shuffleCards();
+
+    }
+
+    private void populateStartHand() {
+        playerHand.setStartHand(playerDeck);
+        playerDeck.setDeckAfterPopulatingHand(playerHand);
+        opponentHand.setStartHand(opponentDeck);
+        opponentDeck.setDeckAfterPopulatingHand(opponentHand);
+
+    }
+
+    private void createStartHand() {
+
+        createHand(playerHand, gridPlayer);
+        createHand(opponentHand, gridOpponent);
+
+    }
+
+    private void createHand(Hand hand, GridPane grid) {
         int column = 0;
         int row = 0;
 
-        for (Card card : playerHand.getHand()) {
-            VBox vBox = NodeUtils.createVBox();
-            Label title = NodeUtils.createTitle(card.getTitle());
-            ImageView imageView = NodeUtils.createImageView(card.getImage());
-            Label attackDefense = NodeUtils.createAttDef(card.getAttack(), card.getDefense());
-            vBox.getChildren().setAll(title, imageView, attackDefense);
+        for (Card card : hand.getHand()) {
+            VBox vBox = createCard(card);
 
-            gridPlayer.add(vBox, column++, row);
+            grid.add(vBox, column++, row);
 
         }
     }
 
-    private void createOpponentHand() {
-        int column = 0;
-        int row = 0;
-
-        for (Card card : opponentHand.getHand()) {
-            VBox vBox = NodeUtils.createVBox();
-            Label title = NodeUtils.createTitle(card.getTitle());
-            ImageView imageView = NodeUtils.createImageView(card.getImage());
-            Label attackDefense = NodeUtils.createAttDef(card.getAttack(), card.getDefense());
-            vBox.getChildren().setAll(title, imageView, attackDefense);
-
-            gridOpponent.add(vBox, column++, row);
-
-        }
+    private VBox createCard(Card card) {
+        VBox vBox = NodeUtils.createVBox();
+        Label title = NodeUtils.createTitle(card.getTitle());
+        ImageView imageView = NodeUtils.createImageView(card.getImage(), card.getPicturePath());
+        Label attackDefense = NodeUtils.createAttDef(card.getAttack(), card.getDefense());
+        vBox.getChildren().setAll(title, imageView, attackDefense);
+        return vBox;
     }
 
     private void createPlayers() {
