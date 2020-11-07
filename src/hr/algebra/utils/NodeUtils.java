@@ -3,17 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hr.algebra.nodes;
+package hr.algebra.utils;
 
 import hr.algebra.model.Card;
-import hr.algebra.repo.dal.Repository;
-import hr.algebra.repo.dal.RepositoryFactory;
-import java.util.List;
-import java.util.Map;
-import javafx.beans.binding.Bindings;
 
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;

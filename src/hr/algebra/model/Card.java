@@ -8,13 +8,7 @@ package hr.algebra.model;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 
 /**
@@ -27,7 +21,7 @@ public class Card implements Serializable {
     //public static final DataFormat CARD = new DataFormat("Card");
 
     //private  StringProperty title;
-      //  private  ObjectProperty<Image> image;
+    //  private  ObjectProperty<Image> image;
 //    private   IntegerProperty attack;
 //    private   IntegerProperty defense;
     private String title;
@@ -68,7 +62,6 @@ public class Card implements Serializable {
 //        this.image=new SimpleObjectProperty<>();
 //        this.image.set(image);
 //    }
-    
     //    public  String getTitle() {
 //        return title.get();
 //    }
@@ -76,8 +69,6 @@ public class Card implements Serializable {
 //    public  void setTitle(String title) {
 //        this.title.set(title);
 //    }
-    
-    
     //    public  int getAttack() {
 //        return attack.get();
 //    }
@@ -117,7 +108,6 @@ public class Card implements Serializable {
         this.image = image;
     }
 
-
     public String getTitle() {
         return title;
     }
@@ -125,7 +115,6 @@ public class Card implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-
 
     public String getPicturePath() {
         return picturePath;
@@ -139,7 +128,6 @@ public class Card implements Serializable {
     public String toString() {
         return title + " (" + attack + "/" + defense + ")";
     }
-    
     
     
 

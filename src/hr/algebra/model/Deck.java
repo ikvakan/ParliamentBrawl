@@ -5,12 +5,9 @@
  */
 package hr.algebra.model;
 
-import hr.algebra.repo.dal.Repository;
-import hr.algebra.repo.dal.RepositoryFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Stack;
 
 public class Deck {
 
@@ -36,10 +33,10 @@ public class Deck {
         this.deck.clear();
     }
 
-    public void populateDeck(List<Card> newDeck) throws Exception {
+    public void populateDeck(List<Card> newDeck)  {
         clearCards();
         deck.addAll(newDeck);
-        //Collections.shuffle(cards);
+        
     }
 
     public void shuffleCards() {

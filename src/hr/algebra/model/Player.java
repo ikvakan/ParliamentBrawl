@@ -20,7 +20,7 @@ import javafx.scene.image.Image;
  *
  * @author IgorKvakan
  */
-public class Player {
+public class Player  {
     
     private final String PICTURE_PATH="src/assets/no_image.jpeg";
     
@@ -68,9 +68,6 @@ public class Player {
     }
     
     
-    
-    
-
     private void createDefaultImage() throws FileNotFoundException {
        this.image=new SimpleObjectProperty<>(new Image(new FileInputStream(PICTURE_PATH)));
     }
