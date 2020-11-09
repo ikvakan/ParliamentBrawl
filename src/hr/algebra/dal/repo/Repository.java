@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hr.algebra.repo.dal;
+package hr.algebra.dal.repo;
 
-import hr.algebra.dal.sql.CardRepository;
+import hr.algebra.model.Card;
+import java.util.List;
+import java.util.Stack;
 
 /**
  *
  * @author IgorKvakan
  */
-public class RepositoryFactory {
+public interface Repository {
     
-    public static Repository getRepository(){
-        return new CardRepository();
-    }
+    List<Card> selectCards() throws Exception;
     
 }

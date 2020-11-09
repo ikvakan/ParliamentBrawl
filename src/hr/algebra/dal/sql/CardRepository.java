@@ -6,7 +6,7 @@
 package hr.algebra.dal.sql;
 
 import hr.algebra.model.Card;
-import hr.algebra.repo.dal.Repository;
+import hr.algebra.dal.repo.Repository;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;

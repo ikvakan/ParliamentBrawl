@@ -128,7 +128,5 @@ public class Card implements Serializable {
     public String toString() {
         return title + " (" + attack + "/" + defense + ")";
     }
-    
-    
 
 }

@@ -12,8 +12,8 @@ import hr.algebra.model.Deck;
 import hr.algebra.model.Hand;
 import hr.algebra.model.Player;
 import hr.algebra.utils.NodeUtils;
-import hr.algebra.repo.dal.Repository;
-import hr.algebra.repo.dal.RepositoryFactory;
+import hr.algebra.dal.repo.Repository;
+import hr.algebra.dal.repo.RepositoryFactory;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -21,9 +21,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -33,7 +30,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -47,6 +43,8 @@ import javafx.scene.layout.VBox;
  */
 public class CardTableController implements Initializable {
 
+    private Repository repository;
+
     private Player player;
     private Player opponent;
 
@@ -58,8 +56,8 @@ public class CardTableController implements Initializable {
 
     private List<Card> cards;
 
-    int columnIndex;
-    int rowIndex;
+    Integer columnIndex = 0;
+    Integer rowIndex = 0;
 
     @FXML
     private Pane pnOpponent, pnPlayer;
@@ -68,21 +66,21 @@ public class CardTableController implements Initializable {
     @FXML
     private GridPane gridPlayer, gridField, gridOpponent;
 
-    private Repository repository;
     @FXML
     private Label lbOpponentName, lbOpponentHealth, lbPlayerName, lbPlayerHealtj;
     @FXML
     private ImageView imageOpponent, imagePlayer;
+
     @FXML
-    private ColumnConstraints middleColumn;
+    private Pane playerPosition1, playerPosition2, playerPosition3;
     @FXML
-    private Label playerPosition1,playerPosition2;
-   
+    private Pane opponentPosition1,opponentPosition2,opponentPosition3;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        //Optional<ButtonType> result =MessageUtils.ConfirmMessage("Start", "Star the game ?").showAndWait();
+        //Optional<ButtonType> result =MessageUtils.ConfirmMessage("Start", "Start the game ?").showAndWait();
         try {
             initCardRepository();
             initObjects();
@@ -140,33 +138,21 @@ public class CardTableController implements Initializable {
         gridField.setOnDragDropped((event) -> {
 
             dragDropped(event);
-            columnIndex++;
 
         });
 
-        gridField.setOnDragEntered((event) -> {
-
-            
-
-      
-        });
-
-       
     }
 
     private void dragOver(DragEvent event) {
-
-        if (columnIndex > 2) {
-            columnIndex = 0;
-            event.consume();
-        }
 
         Dragboard dragboard = event.getDragboard();
 
         if (dragboard.hasContent(NodeUtils.CARD)) {
             event.acceptTransferModes(TransferMode.ANY);
-
+            
         }
+      
+      
 
         event.consume();
     }
@@ -183,7 +169,7 @@ public class CardTableController implements Initializable {
                 Card card = new Card(copy.getTitle(), copy.getAttack(), copy.getDefense(), copy.getPicturePath());
                 VBox vbox = createCard(card);
 
-                gridField.add(vbox, columnIndex, 1);
+                gridField.add(vbox, columnIndex, rowIndex);
                 dragCompleted = true;
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
@@ -263,4 +249,24 @@ public class CardTableController implements Initializable {
 
     }
 
+    @FXML
+    private void handleCardOnDragEntered(DragEvent event) {
+        
+        Node node = (Node) event.getSource();
+
+        columnIndex = GridPane.getColumnIndex(node);
+        rowIndex = GridPane.getRowIndex(node);
+
+        if (columnIndex == null ) {
+            columnIndex = 0;
+           
+        }
+         if (rowIndex == null) {
+            rowIndex=0;
+        }
+
+        System.out.println(columnIndex + " " + rowIndex);
+    }
+
+   
 }

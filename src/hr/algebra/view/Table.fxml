@@ -89,7 +89,7 @@
       <GridPane fx:id="gridField" gridLinesVisible="true" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints fx:id="middleColumn" halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
@@ -97,8 +97,12 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="playerPosition1" text="PlayerPosition1" GridPane.rowIndex="1" />
-            <Label fx:id="playerPosition2" text="PlayerPosition2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Pane fx:id="playerPosition3" onDragEntered="#handleCardOnDragEntered" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eeeccc;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Pane fx:id="playerPosition1" onDragEntered="#handleCardOnDragEntered" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eeeccc;" GridPane.rowIndex="1" />
+            <Pane fx:id="playerPosition2" onDragEntered="#handleCardOnDragEntered" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eeeccc;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Pane fx:id="opponentPosition1" onDragEntered="#handleCardOnDragEntered" prefHeight="200.0" prefWidth="200.0" />
+            <Pane fx:id="opponentPosition2" onDragEntered="#handleCardOnDragEntered" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+            <Pane fx:id="opponentPosition3" onDragEntered="#handleCardOnDragEntered" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
          </children>
       </GridPane>
    </center>
