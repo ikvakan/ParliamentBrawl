@@ -8,17 +8,16 @@ package hr.algebra.model;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * @author IgorKvakan
  */
-public  class Hand  {
+public class Hand {
 
     private List<Card> hand;
 
     public Hand() {
-        hand=new ArrayList<>();
+        hand = new ArrayList<>();
     }
 
     public Hand(List<Card> startHand) {
@@ -33,31 +32,36 @@ public  class Hand  {
         this.hand = hand;
     }
 
-    public void clearHand(){
+    public void clearHand() {
         hand.clear();
     }
-    
-    
+
     public void addCardToHand(Card card) {
         hand.add(card);
     }
 
     public void removeCardFromHand(Card card) {
-        if (hand.isEmpty() || hand == null) {
-            return;
-        }
-        hand.remove(card);
+//        if (hand.isEmpty() || hand == null) {
+//            return;
+//        }
+
+        int index = hand.indexOf(card);
+      
         
+
+        hand.remove(index);
+        
+       
     }
 
-    public void setStartHand(Deck deck){
-        
-        List<Card> cards= deck.getCards();
-        
+    public void setStartHand(Deck deck) {
+
+        List<Card> cards = deck.getDeck();
+
         for (int i = 0; i < 5; i++) {
             hand.add(cards.get(i));
         }
-        
+
     }
-    
+
 }

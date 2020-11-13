@@ -16,7 +16,7 @@
    <bottom>
       <Pane fx:id="pnPlayer" prefHeight="230.0" prefWidth="600.0" stylesheets="@../style/mainStyle.css" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnPlayerDeck" layoutX="59.0" layoutY="40.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="100.0" text="Deck" />
+            <Button fx:id="btnPlayerDeck" layoutX="59.0" layoutY="40.0" mnemonicParsing="false" onAction="#handleDeckOnAction" prefHeight="150.0" prefWidth="100.0" text="Deck" />
             <GridPane fx:id="gridPlayer" alignment="CENTER" layoutX="300.0" layoutY="15.0" prefHeight="200.0" prefWidth="600.0">
               <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="155.0" />
@@ -46,6 +46,7 @@
                      </font></Label>
                </children>
             </VBox>
+            <Button fx:id="btnTest" layoutX="188.0" layoutY="90.0" mnemonicParsing="false" onAction="#testSave" text="TestSave" />
          </children>
       </Pane>
    </bottom>
@@ -67,7 +68,7 @@
                   <Insets />
                </opaqueInsets>
             </GridPane>
-            <Button fx:id="btnOpponentDeck1" layoutX="69.0" layoutY="50.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="100.0" text="Deck" />
+            <Button fx:id="btnOpponentDeck" layoutX="69.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleDeckOnAction" prefHeight="150.0" prefWidth="100.0" text="Deck" />
             <VBox id="vBoxPlayers" alignment="CENTER" layoutX="1025.0" layoutY="15.0" prefHeight="200.0" prefWidth="150.0" spacing="20.0" stylesheets="@../style/mainStyle.css">
                <children>
                   <Label fx:id="lbOpponentName" alignment="CENTER" text="Name">

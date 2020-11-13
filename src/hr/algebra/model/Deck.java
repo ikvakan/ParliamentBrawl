@@ -5,55 +5,92 @@
  */
 package hr.algebra.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Deck {
+public class Deck implements Serializable{
 
-
-    private  List<Card> deck;
+     private static final long serialVersionUID = 2L;
+    
+    private List<Card> deck;
+    private List<Card> hand;
 
     public Deck() {
 
         deck = new ArrayList<>();
-    }
+        hand = new ArrayList<>();
 
-    public Deck(List<Card> cards) {
-        this.deck = cards;
     }
 
     
     
-    public List<Card> getCards() {
+//    public Deck(List<Card> cards) {
+//        this.deck = cards;
+//    }
+
+    public List<Card> getHand() {
+        return hand;
+    }
+
+    public void setHand(List<Card> hand) {
+        this.hand = hand;
+    }
+
+    public void setDeck(List<Card> deck) {
+        this.deck = deck;
+    }
+
+    public List<Card> getDeck() {
         return deck;
     }
 
-    public  void clearCards() {
+    public void clearDeck() {
         this.deck.clear();
     }
 
-    public void populateDeck(List<Card> newDeck)  {
-        clearCards();
-        deck.addAll(newDeck);
-        
+    public void clearHand() {
+        this.hand.clear();
     }
 
     public void shuffleCards() {
         Collections.shuffle(deck);
     }
-    
-    public void setDeckAfterPopulatingHand(Hand hand){
-        List<Card> cards= new ArrayList<>();
-        cards.addAll(hand.getHand());
-        
-        for (Card card : cards) {
+
+    public void createHand(List<Card> d) {
+
+        for (int i = 0; i < 5; i++) {
+            hand.add(d.get(i));
+
+        }
+
+        for (Card card : hand) {
             deck.remove(card);
         }
+
+    }
+
+    public Card getCardForHand() {
+
+       // hand.clear();
+        Card card=deck.get(deck.size() -1);
+        deck.remove(card);
         
+        return card;
         
     }
+
+    public void removeCardFromHand(Card card) {
+
+        hand.remove(card);
+    }
+
     
     
-   
+    
+
 }

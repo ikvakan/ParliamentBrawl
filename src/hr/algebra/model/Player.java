@@ -24,10 +24,11 @@ public class Player  {
     
     private final String PICTURE_PATH="src/assets/no_image.jpeg";
     
-    private  StringProperty name;
-    private IntegerProperty health=new SimpleIntegerProperty(20);
-    private ObjectProperty<Image>  image;
-    private ObjectProperty<List<Hand>> hand;
+
+
+    private String name;
+    private int health=20;
+    private Image image;
 
     public Player() {
     }
@@ -35,40 +36,38 @@ public class Player  {
     
     public Player(String name) throws FileNotFoundException {
         createDefaultImage();
-        this.name = new SimpleStringProperty(name);
-    }
-
-    public Player(String name, List<Hand> hand) {
-        this.name = new SimpleStringProperty(name);
-        this.hand = new SimpleObjectProperty<>(hand);
-    }
-
-    public int getHealth() {
-        return health.get();
-    }
-
-    public void setHealth(int health) {
-        this.health.set(health);
-    }
-
-    public List<Hand> getHand() {
-        return hand.get();
-    }
-
-    public void setHand(List<Hand> hand) {
-        this.hand.set(hand);
+        this.name = name;
     }
 
     public String getName() {
-        return name.get();
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public Image getImage() {
-        return image.get();
+        return image;
     }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
     
+
+
     
     private void createDefaultImage() throws FileNotFoundException {
-       this.image=new SimpleObjectProperty<>(new Image(new FileInputStream(PICTURE_PATH)));
+       this.image=new Image(new FileInputStream(PICTURE_PATH));
     }
 }
