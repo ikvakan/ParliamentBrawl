@@ -6,6 +6,9 @@
 package hr.algebra.utils;
 
 import hr.algebra.model.Card;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -14,12 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 
 /**
@@ -28,11 +26,8 @@ import javafx.scene.layout.VBox;
  */
 public class NodeUtils {
 
-    
-   public static final DataFormat CARD = new DataFormat("Card");
-   
+    public static final DataFormat CARD = new DataFormat("Card");
 
-   
     public static final String DELIMITER = "/";
 
     public static VBox createVBox() {
@@ -44,88 +39,34 @@ public class NodeUtils {
         vBox.setStyle("-fx-background-color:#DFFF; -fx-border-color: #0284d0; -fx-border-width: 2;");
         vBox.setAlignment(Pos.CENTER);
         vBox.setOnDragDetected((event) -> {
-           
-                dragDetected(event, vBox);
-           
+
+            HandleDragEvents.dragDetected(event);
+
         });
 
-        vBox.setOnDragOver((event)->{
-            dragOver(event,vBox);
-        
+        vBox.setOnDragOver((event) -> {
+            HandleDragEvents.dragOver(event);
+
         });
-        
-      
-        
-        ///mouse drag event!!!
+
+        vBox.setOnDragDropped(event -> {
+            try {
+                HandleDragEvents.dragDropped(event);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(NodeUtils.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        });
+
         return vBox;
 
     }
-    
-       private static void dragOver(DragEvent event, VBox vBox) {
-        
-           Dragboard db=event.getDragboard();
-           
-           if (db.hasContent(CARD)) {
-               event.acceptTransferModes(TransferMode.COPY);
-           }
-                   
-           event.consume();
-           
-    }
-    
 
-    private static void dragDetected(MouseEvent event, VBox source)  {
 
-        Dragboard dragboard = source.startDragAndDrop(TransferMode.ANY);
-        ObservableList<Node> nodes = source.getChildren();
-        
-        ClipboardContent content = new ClipboardContent();
-        
-        Card card = new Card();
-        
-
-        if (nodes.size() == 0) {
-            event.consume();
-            return;
-        }
-
-        for (Node node : nodes) {
-            if (node instanceof Label && node.getId().contentEquals("Title")) {
-                Label lbl = (Label) node;
-                card.setTitle(lbl.getText());
-                
-            } else if (node instanceof ImageView && node.getId().contentEquals("Image")) {
-                ImageView iv = (ImageView) node;
-                System.out.println(iv.getUserData());
-                card.setPicturePath((String) iv.getUserData());
-                                
-            } else if (node instanceof Label && node.getId().contentEquals("AttDef")) {
-                Label lbl = (Label) node;
-                String txt = lbl.getText();
-                System.out.println(lbl.getText());
-                String[] value = txt.split(DELIMITER);
-                card.setAttack(Integer.valueOf(value[0]));
-                card.setDefense(Integer.valueOf(value[1]));
-                
-            }
-        }
-
-       
-       
-        
-        content.put(CARD, card);
-        
-        dragboard.setContent(content);
-        
-        System.out.println(dragboard.getContent(CARD));
-        event.consume();
-
-    }
-
-    public static ImageView createImageView(Image image,String picPath) {
+    public static ImageView createImageView(Image image, String picPath) {
         ImageView imageView = new ImageView();
         imageView.setImage(image);
-        imageView.setFitWidth(95);
+        imageView.setFitWidth(100);
         imageView.setFitHeight(90);
         imageView.setId("Image");
         imageView.setUserData(picPath);
@@ -145,7 +86,44 @@ public class NodeUtils {
         lbl.setTooltip(new Tooltip(title));
         return lbl;
     }
+    
+    
+    public static Card getCardFromNode(ObservableList<Node> nodes)  {
+        Card card= new Card();
+        
+        for (Node node : nodes) {
+            if (node instanceof Label && node.getId().contentEquals("Title")) {
+                Label lbl = (Label) node;
+                card.setTitle(lbl.getText());
+                
+            } else if (node instanceof ImageView && node.getId().contentEquals("Image")) {
+                ImageView iv = (ImageView) node;
+                System.out.println(iv.getUserData());
+                card.setPicturePath((String) iv.getUserData());
+               
+                                
+            } else if (node instanceof Label && node.getId().contentEquals("AttDef")) {
+                Label lbl = (Label) node;
+                String txt = lbl.getText();
+                System.out.println(lbl.getText());
+                String[] value = txt.split(DELIMITER);
+                card.setAttack(Integer.valueOf(value[0]));
+                card.setDefense(Integer.valueOf(value[1]));
+                
+            }
+        }
+        
+        return card;
+    }
 
- 
-
+    
+        public static VBox createCard(Card card) {
+        VBox vBox = NodeUtils.createVBox();
+        Label title = NodeUtils.createTitle(card.getTitle());
+        ImageView imageView = NodeUtils.createImageView(card.getImage(), card.getPicturePath());
+        Label attackDefense = NodeUtils.createAttDef(card.getAttack(), card.getDefense());
+        vBox.getChildren().setAll(title, imageView, attackDefense);
+        return vBox;
+    }
+    
 }

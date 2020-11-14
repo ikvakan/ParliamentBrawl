@@ -10,5 +10,6 @@ package hr.algebra.model;
  * @author IgorKvakan
  */
 public class Game {
-    
+
+   
 }
