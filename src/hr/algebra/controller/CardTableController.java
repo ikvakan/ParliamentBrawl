@@ -12,11 +12,10 @@ import hr.algebra.model.Player;
 import hr.algebra.utils.NodeUtils;
 import hr.algebra.dal.repo.Repository;
 import hr.algebra.dal.repo.RepositoryFactory;
-import hr.algebra.utils.HandleDragEvents;
+import hr.algebra.dragEvents.HandleFieldDragEvents;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -70,9 +69,10 @@ public class CardTableController implements Initializable {
     private Button btnPlayerDeck, btnOpponentDeck;
     @FXML
     private GridPane gridPlayer, gridField, gridOpponent;
+   
 
     @FXML
-    private Label lbOpponentName, lbOpponentHealth, lbPlayerName, lbPlayerHealtj;
+    private Label lbOpponentHealth, lbPlayerName, lbPlayerHealth,lbOpponentName;
     @FXML
     private ImageView imageOpponent, imagePlayer;
 
@@ -81,6 +81,10 @@ public class CardTableController implements Initializable {
     
     @FXML
     private Button btnTest;
+   
+    @FXML
+    private VBox playerIcon,opponentIcon;
+   
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -111,10 +115,7 @@ public class CardTableController implements Initializable {
     private void initObjects() throws FileNotFoundException {
 
         try {
-            // playerDeck = new Deck();
-//           
-            //opponentDeck = new Deck();
-//          
+
 
             playerDeck = DeckFactory.createDeck(Deck.class.getName());
             opponentDeck = DeckFactory.createDeck(Deck.class.getName());
@@ -135,28 +136,88 @@ public class CardTableController implements Initializable {
         ObservableList<Node> panes = gridField.getChildren();
 
         panes.forEach(p -> p.setOnDragOver((DragEvent event) -> {
-            dragOver(event);
+            HandleFieldDragEvents.dragOver(event);
         }));
+
+       
 
         panes.forEach(p -> p.setOnDragDropped((event) -> {
-            dragDropped(event);
+            HandleFieldDragEvents.dragDropped(event,columnIndex,rowIndex);
 
         }));
 
 
     }
 
-    private void dragOver(DragEvent event) {
 
-        Dragboard dragboard = event.getDragboard();
+    
 
-        if (dragboard.hasContent(NodeUtils.CARD)) {
-            event.acceptTransferModes(TransferMode.MOVE);
-        }
+    private void populateDeck() throws FileNotFoundException, Exception {
 
-        event.consume();
+        playerDeck.setDeck(repository.selectCards());
+        playerDeck.shuffleCards();
+
+        opponentDeck.setDeck(repository.selectCards());
+        opponentDeck.shuffleCards();
+
     }
 
+    private void populateStartHand() {
+
+        playerDeck.createHand(playerDeck.getDeck());
+        opponentDeck.createHand(opponentDeck.getDeck());
+
+        
+
+    }
+
+    private void createStartHand() {
+
+        createHand(playerDeck.getHand(), gridPlayer);
+        createHand(opponentDeck.getHand(), gridOpponent);
+
+    }
+
+    private void createHand(List<Card> deck, GridPane grid) {
+        int column = 0;
+        int row = 0;
+
+        for (Card card : deck) {
+            VBox vBox = NodeUtils.createCard(card);
+
+            grid.add(vBox, column++, row);
+
+        }
+    }
+
+    private void createPlayers() {
+        createPlayer(player);
+        createOpponent(opponent);
+
+    }
+
+    private void createPlayer(Player player) {
+        lbPlayerName.setText(player.getName());
+        lbPlayerName.setStyle("-fx-background-color:#DFFF;");
+        imagePlayer.setImage(player.getImage());
+        lbPlayerHealth.setText(String.valueOf(player.getHealth()));
+    }
+
+    private void createOpponent(Player opponent) {
+        lbOpponentName.setText(opponent.getName());
+        lbOpponentName.setStyle("-fx-background-color:#DFFF;");
+        imageOpponent.setImage(opponent.getImage());
+        lbOpponentHealth.setText(String.valueOf(opponent.getHealth()));
+
+    }
+
+    @FXML
+    private void testSave(ActionEvent event) {
+
+        
+    }
+    
+    
     @FXML
     private void handleCardOnDragEntered(DragEvent event) {
 
@@ -189,129 +250,6 @@ public class CardTableController implements Initializable {
         System.out.println(columnIndex + " " + rowIndex);
     }
 
-    private void dragDropped(DragEvent event) {
-        boolean dragCompleted = false;
-
-        Dragboard dragboard = event.getDragboard();
-        if (dragboard.hasContent(NodeUtils.CARD)) {
-
-            Card copy = (Card) dragboard.getContent(NodeUtils.CARD);
-
-            try {
-                Card card = new Card(copy.getTitle(), copy.getAttack(), copy.getDefense(), copy.getPicturePath());
-                VBox vbox = NodeUtils.createCard(card);
-
-                gridField.add(vbox, columnIndex, rowIndex);
-
-                HandleDragEvents.setDragOverToNone(event);
-
-                VBox source = (VBox) event.getGestureSource();
-                //System.out.println(source);
-                Parent root = source.getParent();
-                //System.out.println(root);
-
-                if (root instanceof GridPane && root.getId().contentEquals("gridPlayer")) {
-
-                    gridPlayer.getChildren().remove(source); //get column and row
-                  
-
-                } else if (root instanceof GridPane && root.getId().contentEquals("gridOpponent")) {
-
-                    gridOpponent.getChildren().remove(source); //get column and row
-                   
-                }
-
-                dragCompleted = true;
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-
-        event.setDropCompleted(dragCompleted);
-
-        event.consume();
-    }
-
-//    private void setDragOverToNone(DragEvent event) {
-//        Pane target = (Pane) event.getGestureTarget();
-//        target.setOnDragOver((e) -> {
-//            e.acceptTransferModes(TransferMode.NONE);
-//        });
-//    }
-
-    private void populateDeck() throws FileNotFoundException, Exception {
-
-        playerDeck.setDeck(repository.selectCards());
-        playerDeck.shuffleCards();
-
-        opponentDeck.setDeck(repository.selectCards());
-        opponentDeck.shuffleCards();
-
-    }
-
-    private void populateStartHand() {
-
-        playerDeck.createHand(playerDeck.getDeck());
-        opponentDeck.createHand(opponentDeck.getDeck());
-
-        System.out.println("p deck" + playerDeck.getDeck().size());
-
-    }
-
-    private void createStartHand() {
-
-        createHand(playerDeck.getHand(), gridPlayer);
-        createHand(opponentDeck.getHand(), gridOpponent);
-
-    }
-
-    private void createHand(List<Card> deck, GridPane grid) {
-        int column = 0;
-        int row = 0;
-
-        for (Card card : deck) {
-            VBox vBox = NodeUtils.createCard(card);
-
-            grid.add(vBox, column++, row);
-
-        }
-    }
-
-//    private VBox createCard(Card card) {
-//        VBox vBox = NodeUtils.createVBox();
-//        Label title = NodeUtils.createTitle(card.getTitle());
-//        ImageView imageView = NodeUtils.createImageView(card.getImage(), card.getPicturePath());
-//        Label attackDefense = NodeUtils.createAttDef(card.getAttack(), card.getDefense());
-//        vBox.getChildren().setAll(title, imageView, attackDefense);
-//        return vBox;
-//    }
-
-    private void createPlayers() {
-        createPlayer(player);
-        createOpponent(opponent);
-
-    }
-
-    private void createPlayer(Player player) {
-        lbPlayerName.setText(player.getName());
-        lbPlayerName.setStyle("-fx-background-color:#DFFF;");
-        imagePlayer.setImage(player.getImage());
-        lbPlayerHealtj.setText(String.valueOf(player.getHealth()));
-    }
-
-    private void createOpponent(Player opponent) {
-        lbOpponentName.setText(opponent.getName());
-        lbOpponentName.setStyle("-fx-background-color:#DFFF;");
-        imageOpponent.setImage(opponent.getImage());
-        lbOpponentHealth.setText(String.valueOf(opponent.getHealth()));
-
-    }
-
-    @FXML
-    private void testSave(ActionEvent event) {
-
-    }
 
     @FXML
     private void handleDeckOnAction(ActionEvent event) {
@@ -329,7 +267,7 @@ public class CardTableController implements Initializable {
             gridPlayer.add(vBox, lastColIndexPlayer, lastRowIndexPlayer);
             
             
-            System.out.println(playerDeck.getDeck().size());
+            System.out.println("Player deck size:" + " "+ playerDeck.getDeck().size());
 
         } else if (source instanceof Button && source.getId().contains("btnOpponentDeck")) {
 
@@ -337,7 +275,7 @@ public class CardTableController implements Initializable {
             gridOpponent.add(vBox, lastColIndexOpponent, lastRowIndexOpponent);
             
             
-            System.out.println(opponentDeck.getDeck().size());
+            System.out.println("Opponent deck size:" + " "+opponentDeck.getDeck().size());
 
         }
 
@@ -348,6 +286,26 @@ public class CardTableController implements Initializable {
         lastRowIndexPlayer = null;
         lastColIndexOpponent = null;
         lastRowIndexOpponent = null;
+    }
+
+    @FXML
+    private void handleIconOnDragOver(DragEvent event) {
+        
+        Dragboard dragboard=event.getDragboard();
+        VBox source = (VBox) event.getGestureSource();
+        VBox target = (VBox) event.getGestureTarget();
+        
+        if (dragboard.hasContent(NodeUtils.CARD)) {
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+        
+    }
+
+    @FXML
+    private void handleIconOnDragDropped(DragEvent event) {
+        
+        
+        
     }
 
 }

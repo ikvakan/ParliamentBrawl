@@ -5,6 +5,7 @@
  */
 package hr.algebra.utils;
 
+import hr.algebra.dragEvents.HandleCardDragEvents;
 import hr.algebra.model.Card;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
@@ -40,23 +41,24 @@ public class NodeUtils {
         vBox.setAlignment(Pos.CENTER);
         vBox.setOnDragDetected((event) -> {
 
-            HandleDragEvents.dragDetected(event);
+            HandleCardDragEvents.dragDetected(event);
 
         });
 
         vBox.setOnDragOver((event) -> {
-            HandleDragEvents.dragOver(event);
+            HandleCardDragEvents.dragOver(event);
 
         });
 
         vBox.setOnDragDropped(event -> {
             try {
-                HandleDragEvents.dragDropped(event);
+                HandleCardDragEvents.dragDropped(event);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(NodeUtils.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         });
+        
 
         return vBox;
 
@@ -98,14 +100,13 @@ public class NodeUtils {
                 
             } else if (node instanceof ImageView && node.getId().contentEquals("Image")) {
                 ImageView iv = (ImageView) node;
-                System.out.println(iv.getUserData());
+                
                 card.setPicturePath((String) iv.getUserData());
                
                                 
             } else if (node instanceof Label && node.getId().contentEquals("AttDef")) {
                 Label lbl = (Label) node;
                 String txt = lbl.getText();
-                System.out.println(lbl.getText());
                 String[] value = txt.split(DELIMITER);
                 card.setAttack(Integer.valueOf(value[0]));
                 card.setDefense(Integer.valueOf(value[1]));

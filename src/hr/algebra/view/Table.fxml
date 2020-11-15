@@ -32,7 +32,7 @@
                   <Insets />
                </opaqueInsets>
             </GridPane>
-            <VBox id="vBoxPlayers" alignment="CENTER" layoutX="1005.0" layoutY="15.0" prefHeight="200.0" prefWidth="150.0" spacing="20.0" stylesheets="@../style/mainStyle.css">
+            <VBox id="vBoxPlayers" fx:id="playerIcon" alignment="CENTER" layoutX="1005.0" layoutY="15.0" onDragDropped="#handleIconOnDragDropped" onDragOver="#handleIconOnDragOver" prefHeight="200.0" prefWidth="150.0" spacing="20.0" stylesheets="@../style/mainStyle.css">
                <children>
                   <Label fx:id="lbPlayerName" alignment="CENTER" text="Name">
                      <font>
@@ -40,7 +40,7 @@
                      </font>
                   </Label>
                   <ImageView fx:id="imagePlayer" fitHeight="94.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="lbPlayerHealtj" text="health" textFill="#eeeeee">
+                  <Label fx:id="lbPlayerHealth" text="health" textFill="#eeeeee">
                      <font>
                         <Font size="18.0" />
                      </font></Label>
@@ -69,7 +69,7 @@
                </opaqueInsets>
             </GridPane>
             <Button fx:id="btnOpponentDeck" layoutX="69.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleDeckOnAction" prefHeight="150.0" prefWidth="100.0" text="Deck" />
-            <VBox id="vBoxPlayers" alignment="CENTER" layoutX="1025.0" layoutY="15.0" prefHeight="200.0" prefWidth="150.0" spacing="20.0" stylesheets="@../style/mainStyle.css">
+            <VBox id="vBoxPlayers" fx:id="opponentIcon" alignment="CENTER" layoutX="1025.0" layoutY="15.0" onDragDropped="#handleIconOnDragDropped" onDragOver="#handleIconOnDragOver" prefHeight="200.0" prefWidth="150.0" spacing="20.0" stylesheets="@../style/mainStyle.css">
                <children>
                   <Label fx:id="lbOpponentName" alignment="CENTER" text="Name">
                      <font>
