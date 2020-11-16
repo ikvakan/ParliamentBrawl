@@ -36,8 +36,8 @@ public class HandleCardDragEvents {
 
         if (db.hasContent(CARD) 
                 && source != target 
-                && !(HelperDragMethods.findParentFromNode("gridPlayer", event, EventGesture.SOURCE)
-                || HelperDragMethods.findParentFromNode("gridOpponent", event, EventGesture.SOURCE))) 
+                && !(helperDragMethods.findParentFromNode("gridPlayer", event, EventGesture.SOURCE)
+                || helperDragMethods.findParentFromNode("gridOpponent", event, EventGesture.SOURCE))) 
         {
             
             event.acceptTransferModes(TransferMode.ANY);

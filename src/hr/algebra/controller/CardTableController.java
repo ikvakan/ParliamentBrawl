@@ -15,7 +15,7 @@ import hr.algebra.dal.repo.Repository;
 import hr.algebra.dal.repo.RepositoryFactory;
 import hr.algebra.dragEvents.HandleFieldDragEvents;
 import hr.algebra.dragEvents.HandleIconDragEvents;
-import hr.algebra.dragEvents.HelperDragMethods;
+import hr.algebra.dragEvents.helperDragMethods;
 import hr.algebra.factory.PlayerFactory;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
@@ -308,7 +308,7 @@ public class CardTableController implements Initializable {
         boolean canAttack=HandleIconDragEvents.canAttack(event,playerPanes,opponentPanes);
         
         if (dragboard.hasContent(NodeUtils.CARD)
-                && HelperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE) && canAttack ) {
+                && helperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE) && canAttack ) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
 

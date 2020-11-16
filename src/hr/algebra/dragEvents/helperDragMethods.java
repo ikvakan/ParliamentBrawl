@@ -5,7 +5,7 @@
  */
 package hr.algebra.dragEvents;
 
-import enums.eventOrigin;
+import enums.EventGesture;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.DragEvent;
@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
  */
 public class helperDragMethods {
 
-    public static boolean  findParentFromNode(String parentName, DragEvent event, eventOrigin eventOrigin) {
+    public static boolean  findParentFromNode(String parentName, DragEvent event, EventGesture eventOrigin) {
 
         boolean result=false;
        
