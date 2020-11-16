@@ -305,7 +305,7 @@ public class CardTableController implements Initializable {
         Dragboard dragboard = event.getDragboard();
         //List<Pane> panes = Arrays.asList(playerPosition1, playerPosition2, playerPosition3, opponentPosition1, opponentPosition2, opponentPosition3);
         
-        boolean canAttack=HandleIconDragEvents.canAttack(event,playerPanes,opponentPanes);
+        boolean canAttack=HandleIconDragEvents.canAttack(event);
         
         if (dragboard.hasContent(NodeUtils.CARD)
                 && HelperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE) && canAttack ) {

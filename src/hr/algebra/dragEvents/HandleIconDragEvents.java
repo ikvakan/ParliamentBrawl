@@ -22,7 +22,7 @@ import javafx.scene.layout.VBox;
  */
 public class HandleIconDragEvents {
 
-    public static boolean canAttack(DragEvent event, List<Pane> playerPanes, List<Pane> opponentPanes) {
+    public static boolean canAttack(DragEvent event) {
         boolean result = true;
 
         VBox source = (VBox) event.getGestureSource();
