@@ -12,7 +12,6 @@ import static hr.algebra.utils.NodeUtils.CARD;
 import java.io.FileNotFoundException;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
