@@ -5,65 +5,88 @@
  */
 package hr.algebra.dragEvents;
 
-import java.util.List;
-import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.scene.Group;
+import enums.EventGesture;
+import hr.algebra.game.logic.GameLogic;
+import hr.algebra.model.Card;
+import hr.algebra.model.Player;
+import hr.algebra.utils.NodeUtils;
 import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 
 /**
  *
  * @author IgorKvakan
+ * 
  */
 public class HandleIconDragEvents {
 
-    public static boolean canAttack(DragEvent event, List<Pane> playerPanes, List<Pane> opponentPanes) {
-        boolean result = true;
-
-        VBox source = (VBox) event.getGestureSource();
-
-        Integer sourceColIndex = GridPane.getColumnIndex(source);
-        Integer sourceRowIndex = GridPane.getRowIndex(source);
-        //ystem.out.println(rowIndex);
-
-        boolean isPlayerField = (sourceRowIndex == 1) ? true : false;
-        boolean isOpponentField = (sourceRowIndex == 0) ? true : false;
-
-        Parent parent = source.getParent();
-
-        if (isPlayerField) {
-            for (Node node : parent.getChildrenUnmodifiable()) {
-                if (node instanceof VBox) {
-                    Integer columnIndex = GridPane.getColumnIndex(node);
-                    Integer rowIndex = GridPane.getRowIndex(node);
-
-                    if (rowIndex == 0 && columnIndex == sourceColIndex) {
-                        result=false;
-                    }
-                }
-            }
+    private static final String OPPONENT_HEALTH="lbOpponentHealth";
+    private static final String PLAYER_HEALTH="lbPlayerHealth";
+    
+    
+    public static void iconDragOver(DragEvent event) {
+        Dragboard dragboard = event.getDragboard();
+        
+        
+        boolean canAttack=GameLogic.canAttack(event);
+        
+        if (dragboard.hasContent(NodeUtils.CARD)
+                && helperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE) && canAttack ) {
+            event.acceptTransferModes(TransferMode.MOVE);
         }
         
-        else if (isOpponentField) {
-            for (Node node : parent.getChildrenUnmodifiable()) {
-                if (node instanceof VBox) {
-                    Integer columnIndex = GridPane.getColumnIndex(node);
-                    Integer rowIndex = GridPane.getRowIndex(node);
-
-                    if (rowIndex == 1 && columnIndex == sourceColIndex) {
-                        result=false;
-                    }
-                }
-            }
-        }
-
-        return result;
-
+        
+        event.consume();
     }
 
+    public static void iconDragDropped(DragEvent event,VBox playerIcon,VBox opponentIcon,Player player,Player opponent){
+        boolean dragCompleted = false;
+
+        Dragboard db = event.getDragboard();
+
+        VBox target = (VBox) event.getGestureTarget();
+        VBox source = (VBox) event.getGestureSource();
+
+        if (db.hasContent(NodeUtils.CARD) && target == opponentIcon) {
+
+            Card card = NodeUtils.getCardFromNode(source.getChildren());
+
+            for (Node node : opponentIcon.getChildren()) {
+                if (node instanceof Label && node.getId().contentEquals(OPPONENT_HEALTH)) {
+                    Label lbl = (Label) node;
+                    String health = lbl.getText();
+                    player.setHealth(Integer.valueOf(health) - card.getAttack());
+                    lbl.setText(String.valueOf(player.getHealth()));
+                }
+            }
+
+            dragCompleted = true;
+            event.setDropCompleted(dragCompleted);
+
+        } else if (db.hasContent(NodeUtils.CARD) && target == playerIcon) {
+
+            Card card = NodeUtils.getCardFromNode(source.getChildren());
+
+            for (Node node : playerIcon.getChildren()) {
+                if (node instanceof Label && node.getId().contentEquals(PLAYER_HEALTH)) {
+                    Label lbl = (Label) node;
+                    String health = lbl.getText();
+                    opponent.setHealth(Integer.valueOf(health) - card.getAttack());
+                    lbl.setText(String.valueOf(opponent.getHealth()));
+                }
+            }
+
+            dragCompleted = true;
+            event.setDropCompleted(dragCompleted);
+        }
+
+        event.consume();
+        
+     
+    }
+    
 }

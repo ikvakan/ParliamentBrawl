@@ -5,7 +5,6 @@
  */
 package hr.algebra.controller;
 
-import enums.EventGesture;
 import hr.algebra.factory.DeckFactory;
 import hr.algebra.model.Card;
 import hr.algebra.model.Deck;
@@ -15,8 +14,6 @@ import hr.algebra.dal.repo.Repository;
 import hr.algebra.dal.repo.RepositoryFactory;
 import hr.algebra.dragEvents.HandleFieldDragEvents;
 import hr.algebra.dragEvents.HandleIconDragEvents;
-import hr.algebra.dragEvents.helperDragMethods;
-import hr.algebra.factory.PlayerFactory;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -29,7 +26,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -37,8 +33,6 @@ import javafx.scene.control.Label;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -127,11 +121,9 @@ public class CardTableController implements Initializable {
 
             player = new Player("Player 1");
             opponent = new Player("Player 2");
-            
-            
+
 //            player = PlayerFactory.createPlayer(Player.class.getName());
 //            opponent = PlayerFactory.createPlayer(Player.class.getName());
-
         } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
                 | IllegalAccessException | InvocationTargetException | IllegalArgumentException ex) {
             Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
@@ -154,11 +146,11 @@ public class CardTableController implements Initializable {
 
     }
 
-     private void initGroupPanes() {
-        playerPanes=Arrays.asList(playerPosition1,playerPosition2,playerPosition3);
-        opponentPanes=Arrays.asList(opponentPosition1,opponentPosition2,opponentPosition3);
+    private void initGroupPanes() {
+        playerPanes = Arrays.asList(playerPosition1, playerPosition2, playerPosition3);
+        opponentPanes = Arrays.asList(opponentPosition1, opponentPosition2, opponentPosition3);
     }
-    
+
     private void populateDeck() throws FileNotFoundException, Exception {
 
         playerDeck.setDeck(repository.selectCards());
@@ -196,8 +188,7 @@ public class CardTableController implements Initializable {
     }
 
     private void createPlayers() {
-        
-        
+
         createPlayer(player);
         createOpponent(opponent);
 
@@ -252,7 +243,6 @@ public class CardTableController implements Initializable {
             rowIndex = 0;
         }
 
-        System.out.println(columnIndex + " " + rowIndex);
     }
 
     @FXML
@@ -301,27 +291,15 @@ public class CardTableController implements Initializable {
 
     @FXML
     private void handleIconOnDragOver(DragEvent event) {
-
-        Dragboard dragboard = event.getDragboard();
-        //List<Pane> panes = Arrays.asList(playerPosition1, playerPosition2, playerPosition3, opponentPosition1, opponentPosition2, opponentPosition3);
-        
-        boolean canAttack=HandleIconDragEvents.canAttack(event,playerPanes,opponentPanes);
-        
-        if (dragboard.hasContent(NodeUtils.CARD)
-                && helperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE) && canAttack ) {
-            event.acceptTransferModes(TransferMode.MOVE);
-        }
+        HandleIconDragEvents.iconDragOver(event);
 
     }
 
     @FXML
     private void handleIconOnDragDropped(DragEvent event) {
+//       
+        HandleIconDragEvents.iconDragDropped(event, playerIcon, opponentIcon, player, opponent);
 
-           
-           
-        
     }
-
-   
 
 }

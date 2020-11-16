@@ -7,13 +7,6 @@ package hr.algebra.model;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
 /**
@@ -69,7 +62,7 @@ public class Player  {
     }
     
     
-    public boolean isPlaeryDead(){
+    public boolean isPlayerDead(){
         boolean result=false;
         
         if (health <1) {
