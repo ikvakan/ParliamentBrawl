@@ -64,10 +64,18 @@ public class Player  {
     }
 
     
-
-
-    
     private void createDefaultImage() throws FileNotFoundException {
        this.image=new Image(new FileInputStream(PICTURE_PATH));
+    }
+    
+    
+    public boolean isPlaeryDead(){
+        boolean result=false;
+        
+        if (health <1) {
+            result =true;
+        }
+        
+        return result;
     }
 }

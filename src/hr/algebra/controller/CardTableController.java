@@ -14,7 +14,9 @@ import hr.algebra.utils.NodeUtils;
 import hr.algebra.dal.repo.Repository;
 import hr.algebra.dal.repo.RepositoryFactory;
 import hr.algebra.dragEvents.HandleFieldDragEvents;
+import hr.algebra.dragEvents.HandleIconDragEvents;
 import hr.algebra.dragEvents.HelperDragMethods;
+import hr.algebra.factory.PlayerFactory;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -27,6 +29,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -63,8 +66,9 @@ public class CardTableController implements Initializable {
 
     Integer lastColIndexOpponent;
     Integer lastRowIndexOpponent;
-    
-    List<Pane> panes;
+
+    List<Pane> playerPanes;
+    List<Pane> opponentPanes;
 
     @FXML
     private Pane pnOpponent, pnPlayer;
@@ -72,22 +76,20 @@ public class CardTableController implements Initializable {
     private Button btnPlayerDeck, btnOpponentDeck;
     @FXML
     private GridPane gridPlayer, gridField, gridOpponent;
-   
 
     @FXML
-    private Label lbOpponentHealth, lbPlayerName, lbPlayerHealth,lbOpponentName;
+    private Label lbOpponentHealth, lbPlayerName, lbPlayerHealth, lbOpponentName;
     @FXML
     private ImageView imageOpponent, imagePlayer;
 
     @FXML
-    private Pane playerPosition1, playerPosition2, playerPosition3,opponentPosition1, opponentPosition2, opponentPosition3;
-    
+    private Pane playerPosition1, playerPosition2, playerPosition3, opponentPosition1, opponentPosition2, opponentPosition3;
+
     @FXML
     private Button btnTest;
-   
+
     @FXML
-    private VBox playerIcon,opponentIcon;
-   
+    private VBox playerIcon, opponentIcon;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -97,6 +99,7 @@ public class CardTableController implements Initializable {
             initCardRepository();
             initObjects();
             initDragAndDrop();
+            initGroupPanes();
             populateDeck();
             populateStartHand();
             createPlayers();
@@ -119,12 +122,15 @@ public class CardTableController implements Initializable {
 
         try {
 
-
             playerDeck = DeckFactory.createDeck(Deck.class.getName());
             opponentDeck = DeckFactory.createDeck(Deck.class.getName());
 
             player = new Player("Player 1");
             opponent = new Player("Player 2");
+            
+            
+//            player = PlayerFactory.createPlayer(Player.class.getName());
+//            opponent = PlayerFactory.createPlayer(Player.class.getName());
 
         } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
                 | IllegalAccessException | InvocationTargetException | IllegalArgumentException ex) {
@@ -135,26 +141,24 @@ public class CardTableController implements Initializable {
 
     private void initDragAndDrop() {
 
-        
         ObservableList<Node> panes = gridField.getChildren();
 
         panes.forEach(p -> p.setOnDragOver((DragEvent event) -> {
             HandleFieldDragEvents.dragOver(event);
         }));
 
-       
-
         panes.forEach(p -> p.setOnDragDropped((event) -> {
-            HandleFieldDragEvents.dragDropped(event,columnIndex,rowIndex);
+            HandleFieldDragEvents.dragDropped(event, columnIndex, rowIndex);
 
         }));
 
-
     }
 
-
+     private void initGroupPanes() {
+        playerPanes=Arrays.asList(playerPosition1,playerPosition2,playerPosition3);
+        opponentPanes=Arrays.asList(opponentPosition1,opponentPosition2,opponentPosition3);
+    }
     
-
     private void populateDeck() throws FileNotFoundException, Exception {
 
         playerDeck.setDeck(repository.selectCards());
@@ -169,8 +173,6 @@ public class CardTableController implements Initializable {
 
         playerDeck.createHand(playerDeck.getDeck());
         opponentDeck.createHand(opponentDeck.getDeck());
-
-        
 
     }
 
@@ -194,6 +196,8 @@ public class CardTableController implements Initializable {
     }
 
     private void createPlayers() {
+        
+        
         createPlayer(player);
         createOpponent(opponent);
 
@@ -217,10 +221,8 @@ public class CardTableController implements Initializable {
     @FXML
     private void testSave(ActionEvent event) {
 
-        
     }
-    
-    
+
     @FXML
     private void handleCardOnDragEntered(DragEvent event) {
 
@@ -253,7 +255,6 @@ public class CardTableController implements Initializable {
         System.out.println(columnIndex + " " + rowIndex);
     }
 
-
     @FXML
     private void handleDeckOnAction(ActionEvent event) {
 
@@ -266,27 +267,26 @@ public class CardTableController implements Initializable {
 
         if (source instanceof Button && source.getId().contains("btnPlayerDeck")) {
 
-            if (gridPlayer.getChildrenUnmodifiable().size()==5) {
+            if (gridPlayer.getChildrenUnmodifiable().size() == 5) {
                 resetLastIndex();
             }
-            
+
             VBox vBox = NodeUtils.createCard(playerDeck.getCardForHand());
             gridPlayer.add(vBox, lastColIndexPlayer, lastRowIndexPlayer);
-            
-            
-            System.out.println("Player deck size:" + " "+ playerDeck.getDeck().size());
 
-        }  if (source instanceof Button && source.getId().contains("btnOpponentDeck")) {
-            
-             if (gridOpponent.getChildrenUnmodifiable().size()==5) {
+            System.out.println("Player deck size:" + " " + playerDeck.getDeck().size());
+
+        }
+        if (source instanceof Button && source.getId().contains("btnOpponentDeck")) {
+
+            if (gridOpponent.getChildrenUnmodifiable().size() == 5) {
                 resetLastIndex();
             }
 
             VBox vBox = NodeUtils.createCard(opponentDeck.getCardForHand());
             gridOpponent.add(vBox, lastColIndexOpponent, lastRowIndexOpponent);
-            
-            
-            System.out.println("Opponent deck size:" + " "+opponentDeck.getDeck().size());
+
+            System.out.println("Opponent deck size:" + " " + opponentDeck.getDeck().size());
 
         }
 
@@ -301,27 +301,27 @@ public class CardTableController implements Initializable {
 
     @FXML
     private void handleIconOnDragOver(DragEvent event) {
+
+        Dragboard dragboard = event.getDragboard();
+        //List<Pane> panes = Arrays.asList(playerPosition1, playerPosition2, playerPosition3, opponentPosition1, opponentPosition2, opponentPosition3);
         
-        Dragboard dragboard=event.getDragboard();
-        List<Pane> panes=Arrays.asList(playerPosition1,playerPosition2,playerPosition3,opponentPosition1,opponentPosition2,opponentPosition3);
+        boolean canAttack=HandleIconDragEvents.canAttack(event,playerPanes,opponentPanes);
         
-        //boolean canAttack=helperDragMethods.canAttack(event,panes);
-        
-        
-        if (dragboard.hasContent(NodeUtils.CARD) 
-                && HelperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE)) {
+        if (dragboard.hasContent(NodeUtils.CARD)
+                && HelperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE) && canAttack ) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
-        
+
     }
 
     @FXML
     private void handleIconOnDragDropped(DragEvent event) {
-        
-        
-        
-        
+
+           
+           
         
     }
+
+   
 
 }
