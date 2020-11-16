@@ -9,7 +9,7 @@ package enums;
  *
  * @author IgorKvakan
  */
-public enum eventOrigin {
+public enum EventGesture {
     
     SOURCE,
     TARGET

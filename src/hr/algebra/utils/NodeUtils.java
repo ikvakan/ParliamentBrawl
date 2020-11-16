@@ -28,6 +28,10 @@ import javafx.scene.layout.VBox;
 public class NodeUtils {
 
     public static final DataFormat CARD = new DataFormat("Card");
+    
+    private static final String TITLE="Title";
+    private static final String IMAGE="Image";
+    private static final String ATT_DEF="AttDef";
 
     public static final String DELIMITER = "/";
 
@@ -70,7 +74,7 @@ public class NodeUtils {
         imageView.setImage(image);
         imageView.setFitWidth(100);
         imageView.setFitHeight(90);
-        imageView.setId("Image");
+        imageView.setId(IMAGE);
         imageView.setUserData(picPath);
         return imageView;
     }
@@ -78,13 +82,13 @@ public class NodeUtils {
     public static Label createAttDef(int attack, int defense) {
 
         Label lbl = new Label(String.valueOf(attack) + DELIMITER + String.valueOf(defense));
-        lbl.setId("AttDef");
+        lbl.setId(ATT_DEF);
         return lbl;
     }
 
     public static Label createTitle(String title) {
         Label lbl = new Label(title);
-        lbl.setId("Title");
+        lbl.setId(TITLE);
         lbl.setTooltip(new Tooltip(title));
         return lbl;
     }
@@ -94,17 +98,17 @@ public class NodeUtils {
         Card card= new Card();
         
         for (Node node : nodes) {
-            if (node instanceof Label && node.getId().contentEquals("Title")) {
+            if (node instanceof Label && node.getId().contentEquals(TITLE)) {
                 Label lbl = (Label) node;
                 card.setTitle(lbl.getText());
                 
-            } else if (node instanceof ImageView && node.getId().contentEquals("Image")) {
+            } else if (node instanceof ImageView && node.getId().contentEquals(IMAGE)) {
                 ImageView iv = (ImageView) node;
                 
                 card.setPicturePath((String) iv.getUserData());
                
                                 
-            } else if (node instanceof Label && node.getId().contentEquals("AttDef")) {
+            } else if (node instanceof Label && node.getId().contentEquals(ATT_DEF)) {
                 Label lbl = (Label) node;
                 String txt = lbl.getText();
                 String[] value = txt.split(DELIMITER);

@@ -5,7 +5,7 @@
  */
 package hr.algebra.dragEvents;
 
-import enums.eventOrigin;
+import enums.EventGesture;
 import hr.algebra.model.Card;
 import hr.algebra.utils.NodeUtils;
 import static hr.algebra.utils.NodeUtils.CARD;
@@ -37,8 +37,8 @@ public class HandleCardDragEvents {
 
         if (db.hasContent(CARD) 
                 && source != target 
-                && !(helperDragMethods.findParentFromNode("gridPlayer", event, eventOrigin.SOURCE)
-                || helperDragMethods.findParentFromNode("gridOpponent", event, eventOrigin.SOURCE))) 
+                && !(HelperDragMethods.findParentFromNode("gridPlayer", event, EventGesture.SOURCE)
+                || HelperDragMethods.findParentFromNode("gridOpponent", event, EventGesture.SOURCE))) 
         {
             
             event.acceptTransferModes(TransferMode.ANY);

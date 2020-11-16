@@ -5,6 +5,7 @@
  */
 package hr.algebra.controller;
 
+import enums.EventGesture;
 import hr.algebra.factory.DeckFactory;
 import hr.algebra.model.Card;
 import hr.algebra.model.Deck;
@@ -13,9 +14,11 @@ import hr.algebra.utils.NodeUtils;
 import hr.algebra.dal.repo.Repository;
 import hr.algebra.dal.repo.RepositoryFactory;
 import hr.algebra.dragEvents.HandleFieldDragEvents;
+import hr.algebra.dragEvents.HelperDragMethods;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -263,13 +266,21 @@ public class CardTableController implements Initializable {
 
         if (source instanceof Button && source.getId().contains("btnPlayerDeck")) {
 
+            if (gridPlayer.getChildrenUnmodifiable().size()==5) {
+                resetLastIndex();
+            }
+            
             VBox vBox = NodeUtils.createCard(playerDeck.getCardForHand());
             gridPlayer.add(vBox, lastColIndexPlayer, lastRowIndexPlayer);
             
             
             System.out.println("Player deck size:" + " "+ playerDeck.getDeck().size());
 
-        } else if (source instanceof Button && source.getId().contains("btnOpponentDeck")) {
+        }  if (source instanceof Button && source.getId().contains("btnOpponentDeck")) {
+            
+             if (gridOpponent.getChildrenUnmodifiable().size()==5) {
+                resetLastIndex();
+            }
 
             VBox vBox = NodeUtils.createCard(opponentDeck.getCardForHand());
             gridOpponent.add(vBox, lastColIndexOpponent, lastRowIndexOpponent);
@@ -292,10 +303,13 @@ public class CardTableController implements Initializable {
     private void handleIconOnDragOver(DragEvent event) {
         
         Dragboard dragboard=event.getDragboard();
-        VBox source = (VBox) event.getGestureSource();
-        VBox target = (VBox) event.getGestureTarget();
+        List<Pane> panes=Arrays.asList(playerPosition1,playerPosition2,playerPosition3,opponentPosition1,opponentPosition2,opponentPosition3);
         
-        if (dragboard.hasContent(NodeUtils.CARD)) {
+        //boolean canAttack=helperDragMethods.canAttack(event,panes);
+        
+        
+        if (dragboard.hasContent(NodeUtils.CARD) 
+                && HelperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE)) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
         
@@ -303,6 +317,8 @@ public class CardTableController implements Initializable {
 
     @FXML
     private void handleIconOnDragDropped(DragEvent event) {
+        
+        
         
         
         
