@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hr.algebra.dragEvents;
+package hr.algebra.events.drag;
 
 import enums.EventGesture;
 import hr.algebra.model.Card;

@@ -5,7 +5,7 @@
  */
 package hr.algebra.utils;
 
-import hr.algebra.dragEvents.HandleCardDragEvents;
+import hr.algebra.events.drag.HandleCardDragEvents;
 import hr.algebra.model.Card;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;

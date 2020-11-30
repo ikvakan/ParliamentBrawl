@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hr.algebra.dragEvents;
+package hr.algebra.events.drag;
 
 import hr.algebra.controller.CardTableController;
 import hr.algebra.model.Card;
@@ -42,7 +42,7 @@ public class HandleFieldDragEvents {
                 
                 Parent targetGrid = node.getParent();
                 
-                if (targetGrid instanceof GridPane && targetGrid.getId().contains("gridField")) {
+                if (targetGrid instanceof GridPane && targetGrid.getId().contentEquals("gridField")) {
                     GridPane gridField=(GridPane) targetGrid;
                     gridField.add(vbox, columnIndex, rowIndex);
                 }
@@ -52,12 +52,11 @@ public class HandleFieldDragEvents {
                 HandleCardDragEvents.setDragOverToNone(event);
 
                 VBox source = (VBox) event.getGestureSource();
-                //System.out.println(source);
                 Parent root = source.getParent();
-                //System.out.println(root);
+        
 
                 if (root instanceof GridPane && root.getId().contentEquals("gridPlayer")) {
-
+                    
                     GridPane grid=(GridPane)root;
                     
                     grid.getChildren().remove(source); //get column and row

@@ -20,7 +20,7 @@ public class Player  {
 
 
     private String name;
-    private int health=20;
+    private int health;
     private Image image;
 
     public Player() {
@@ -62,7 +62,7 @@ public class Player  {
     }
     
     
-    public boolean isPlayerDead(){
+    public boolean isDead( ){
         boolean result=false;
         
         if (health <1) {

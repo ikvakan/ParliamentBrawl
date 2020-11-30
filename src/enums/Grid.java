@@ -3,17 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hr.algebra.dal.repo;
-
-import hr.algebra.model.Card;
-import java.util.List;
+package enums;
 
 /**
  *
  * @author IgorKvakan
  */
-public interface Repository {
-    
-    List<Card> selectCards() throws Exception;
-    
+public enum Grid {
+    PLAYER,
+    OPPONENT,
+    FIELD
 }

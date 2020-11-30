@@ -5,6 +5,7 @@
  */
 package hr.algebra.controller;
 
+import enums.Grid;
 import hr.algebra.factory.DeckFactory;
 import hr.algebra.model.Card;
 import hr.algebra.model.Deck;
@@ -12,16 +13,22 @@ import hr.algebra.model.Player;
 import hr.algebra.utils.NodeUtils;
 import hr.algebra.dal.repo.Repository;
 import hr.algebra.dal.repo.RepositoryFactory;
-import hr.algebra.dragEvents.HandleFieldDragEvents;
-import hr.algebra.dragEvents.HandleIconDragEvents;
+import hr.algebra.dal.repo.SerializationRepository;
+import hr.algebra.events.drag.HandleFieldDragEvents;
+import hr.algebra.events.drag.HandleIconDragEvents;
+import hr.algebra.utils.FileUtils;
+import hr.algebra.utils.SerializationUtils;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,7 +37,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.layout.GridPane;
@@ -80,10 +87,10 @@ public class CardTableController implements Initializable {
     private Pane playerPosition1, playerPosition2, playerPosition3, opponentPosition1, opponentPosition2, opponentPosition3;
 
     @FXML
-    private Button btnTest;
+    private VBox playerIcon, opponentIcon;
 
     @FXML
-    private VBox playerIcon, opponentIcon;
+    private MenuItem miSaveData, miLoadData;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -93,7 +100,6 @@ public class CardTableController implements Initializable {
             initCardRepository();
             initObjects();
             initDragAndDrop();
-            initGroupPanes();
             populateDeck();
             populateStartHand();
             createPlayers();
@@ -112,18 +118,18 @@ public class CardTableController implements Initializable {
 
     }
 
-    private void initObjects() throws FileNotFoundException {
-
+    private void initObjects() throws FileNotFoundException, IOException {
         try {
-
+            
             playerDeck = DeckFactory.createDeck(Deck.class.getName());
             opponentDeck = DeckFactory.createDeck(Deck.class.getName());
 
             player = new Player("Player 1");
+            player.setHealth(20);
             opponent = new Player("Player 2");
+            opponent.setHealth(20);
+            
 
-//            player = PlayerFactory.createPlayer(Player.class.getName());
-//            opponent = PlayerFactory.createPlayer(Player.class.getName());
         } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
                 | IllegalAccessException | InvocationTargetException | IllegalArgumentException ex) {
             Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
@@ -144,11 +150,6 @@ public class CardTableController implements Initializable {
 
         }));
 
-    }
-
-    private void initGroupPanes() {
-        playerPanes = Arrays.asList(playerPosition1, playerPosition2, playerPosition3);
-        opponentPanes = Arrays.asList(opponentPosition1, opponentPosition2, opponentPosition3);
     }
 
     private void populateDeck() throws FileNotFoundException, Exception {
@@ -206,11 +207,6 @@ public class CardTableController implements Initializable {
         lbOpponentName.setStyle("-fx-background-color:#DFFF;");
         imageOpponent.setImage(opponent.getImage());
         lbOpponentHealth.setText(String.valueOf(opponent.getHealth()));
-
-    }
-
-    @FXML
-    private void testSave(ActionEvent event) {
 
     }
 
@@ -300,6 +296,136 @@ public class CardTableController implements Initializable {
 //       
         HandleIconDragEvents.iconDragDropped(event, playerIcon, opponentIcon, player, opponent);
 
+    }
+
+    @FXML
+    private void handleSaveData(ActionEvent event) {
+
+        try {
+            File file = FileUtils.saveFileDialog(btnPlayerDeck.getScene().getWindow(), "ser");
+            if (file != null) {
+
+                SerializationRepository.getInstance().setPlayerDeck((List<Card>) playerDeck.getDeck());
+                SerializationRepository.getInstance().setOpponentDeck((List<Card>) opponentDeck.getDeck());
+
+                SerializationRepository.getInstance().setPlayerHand(ChooseGrid(Grid.PLAYER));
+                SerializationRepository.getInstance().setOpponentHand(ChooseGrid(Grid.OPPONENT));
+                SerializationRepository.getInstance().setFieldCards(ChooseGrid(Grid.FIELD));
+
+                SerializationUtils.write(SerializationRepository.getInstance(), file.getAbsolutePath());
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private List<Card> ChooseGrid(Grid side) {
+
+        List<Card> cards = new ArrayList<>();
+
+        switch (side) {
+            case PLAYER:
+                cards = getCardsFromGrid(gridPlayer);
+                break;
+            case OPPONENT:
+                cards = getCardsFromGrid(gridOpponent);
+                break;
+            case FIELD:
+                cards = getCardsFromGrid(gridField);
+                break;
+        }
+
+        return cards;
+    }
+
+    private List<Card> getCardsFromGrid(GridPane grid) {
+        List<Card> list = new ArrayList<>();
+
+        for (Node node : grid.getChildren()) {
+
+            if (node instanceof VBox) {
+
+                int columnIndex = GridPane.getColumnIndex(node);
+                int rowIndex = GridPane.getRowIndex(node);
+                Card card = NodeUtils.getCardFromNode(((VBox) node).getChildren());
+                card.setColumnIndex(columnIndex);
+                card.setRowIndex(rowIndex);
+                list.add(card);
+            }
+        }
+
+        return list;
+    }
+
+    @FXML
+    private void handleLoadData(ActionEvent event) {
+        File file = FileUtils.uploadFileDialog(btnPlayerDeck.getScene().getWindow(), "ser");
+        if (file != null) {
+            try {
+                clearFields();
+
+               
+                SerializationUtils.read(file.getAbsolutePath());
+
+                populateDeckAfterLoad();
+
+                fillGridAfterLoad(SerializationRepository.getInstance().getPlayerHand(), Grid.PLAYER);
+                fillGridAfterLoad(SerializationRepository.getInstance().getOpponentHand(), Grid.OPPONENT);
+                fillGridAfterLoad(SerializationRepository.getInstance().getFieldCards(), Grid.FIELD);
+
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private void clearFields() {
+        gridPlayer.getChildren().removeAll(gridPlayer.getChildren());
+        gridOpponent.getChildren().removeAll(gridOpponent.getChildren());
+
+        ObservableList<Node> list = FXCollections.observableArrayList();
+
+        for (Node node : gridField.getChildrenUnmodifiable()) {
+            if (node instanceof VBox) {
+                list.add(node);
+            }
+        }
+        gridField.getChildren().removeAll(list);
+
+    }
+
+    private void fillGridAfterLoad(List<Card> cards, Grid side) throws FileNotFoundException {
+
+        switch (side) {
+            case PLAYER:
+                fillGrid(cards, gridPlayer);
+                break;
+            case OPPONENT:
+                fillGrid(cards, gridOpponent);
+                break;
+            case FIELD:
+                fillGrid(cards, gridField);
+                break;
+
+        }
+
+    }
+
+    private void fillGrid(List<Card> cards, GridPane grid) throws FileNotFoundException {
+        for (Card card : cards) {
+            card.createImage(card.getPicturePath());
+            VBox createCard = NodeUtils.createCard(card);
+            grid.add(createCard, card.getColumnIndex(), card.getRowIndex());
+
+        }
+    }
+
+    private void populateDeckAfterLoad() {
+        playerDeck.clearDeck();
+        opponentDeck.clearDeck();
+        playerDeck.setDeck(SerializationRepository.getInstance().getPlayerDeck());
+        opponentDeck.setDeck(SerializationRepository.getInstance().getOpponentDeck());
     }
 
 }

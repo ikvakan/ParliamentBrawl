@@ -29,6 +29,9 @@ public class Card implements Serializable {
     private int defense;
     private transient Image image;
     private String picturePath;
+    
+    private int columnIndex;
+    private int rowIndex;
 
     private final String SRC_DIR = "src";
 
@@ -43,6 +46,7 @@ public class Card implements Serializable {
         this.attack = attack;
         this.defense = defense;
         this.picturePath = picturePath;
+        
         createImage(picturePath);
     }
 
@@ -51,7 +55,23 @@ public class Card implements Serializable {
         this.image = new Image(new FileInputStream(SRC_DIR + File.separator + path));
     }
 
+    public int getColumnIndex() {
+        return columnIndex;
+    }
 
+    public void setColumnIndex(int columnIndex) {
+        this.columnIndex = columnIndex;
+    }
+
+    public int getRowIndex() {
+        return rowIndex;
+    }
+
+    public void setRowIndex(int rowIndex) {
+        this.rowIndex = rowIndex;
+    }
+
+    
 
     public int getAttack() {
         return attack;
@@ -103,7 +123,8 @@ public class Card implements Serializable {
         oos.writeInt(attack);
         oos.writeInt(defense);
         oos.writeUTF(picturePath);
-
+        oos.writeInt(columnIndex);
+        oos.writeInt(rowIndex);
     }
 
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
@@ -111,7 +132,8 @@ public class Card implements Serializable {
         attack = ois.readInt();
         defense = ois.readInt();
         picturePath = ois.readUTF();
-
+        columnIndex=ois.readInt();
+        rowIndex=ois.readInt();
         createImage(picturePath);
     }
 

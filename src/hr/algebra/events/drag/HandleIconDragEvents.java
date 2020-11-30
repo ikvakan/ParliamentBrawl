@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hr.algebra.dragEvents;
+package hr.algebra.events.drag;
 
 import enums.EventGesture;
 import hr.algebra.game.logic.GameLogic;
 import hr.algebra.model.Card;
 import hr.algebra.model.Player;
+import hr.algebra.utils.MessageUtils;
 import hr.algebra.utils.NodeUtils;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -20,30 +21,27 @@ import javafx.scene.layout.VBox;
 /**
  *
  * @author IgorKvakan
- * 
+ *
  */
 public class HandleIconDragEvents {
 
-    private static final String OPPONENT_HEALTH="lbOpponentHealth";
-    private static final String PLAYER_HEALTH="lbPlayerHealth";
-    
-    
+    private static final String OPPONENT_HEALTH = "lbOpponentHealth";
+    private static final String PLAYER_HEALTH = "lbPlayerHealth";
+
     public static void iconDragOver(DragEvent event) {
         Dragboard dragboard = event.getDragboard();
-        
-        
-        boolean canAttack=GameLogic.canAttack(event);
-        
+
+        boolean canAttack = GameLogic.canAttack(event);
+
         if (dragboard.hasContent(NodeUtils.CARD)
-                && helperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE) && canAttack ) {
+                && helperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE) && canAttack) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
-        
-        
+
         event.consume();
     }
 
-    public static void iconDragDropped(DragEvent event,VBox playerIcon,VBox opponentIcon,Player player,Player opponent){
+    public static void iconDragDropped(DragEvent event, VBox playerIcon, VBox opponentIcon, Player player, Player opponent) {
         boolean dragCompleted = false;
 
         Dragboard db = event.getDragboard();
@@ -60,7 +58,13 @@ public class HandleIconDragEvents {
                     Label lbl = (Label) node;
                     String health = lbl.getText();
                     player.setHealth(Integer.valueOf(health) - card.getAttack());
-                    lbl.setText(String.valueOf(player.getHealth()));
+                    if (player.isDead()) {
+                        lbl.setText("DEAD");
+                        MessageUtils.ShowMessage("Player dead", "You have lost the game !").showAndWait();
+                    } else {
+                        lbl.setText(String.valueOf(player.getHealth()));
+
+                    }
                 }
             }
 
@@ -76,7 +80,13 @@ public class HandleIconDragEvents {
                     Label lbl = (Label) node;
                     String health = lbl.getText();
                     opponent.setHealth(Integer.valueOf(health) - card.getAttack());
-                    lbl.setText(String.valueOf(opponent.getHealth()));
+                    if (opponent.isDead()) {
+                        lbl.setText("DEAD");
+                        MessageUtils.ShowMessage("Player dead", "You have lost the game !").showAndWait();
+                    } else {
+                        lbl.setText(String.valueOf(opponent.getHealth()));
+
+                    }
                 }
             }
 
@@ -85,8 +95,7 @@ public class HandleIconDragEvents {
         }
 
         event.consume();
-        
-     
+
     }
-    
+
 }

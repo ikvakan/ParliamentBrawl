@@ -20,5 +20,12 @@ public class MessageUtils {
         
         return alert;
     }
+    public static Alert ShowMessage(String title, String content ) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        
+        return alert;
+    }
 
 }

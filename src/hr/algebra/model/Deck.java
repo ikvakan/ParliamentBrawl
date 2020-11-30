@@ -89,6 +89,18 @@ public class Deck implements Serializable{
         hand.remove(card);
     }
 
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.writeObject(deck);
+        oos.writeObject(hand);
+
+    }
+
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        deck=(List<Card>)ois.readObject();
+        hand=(List<Card>)ois.readObject();
+        
+    }
+    
     
     
     
