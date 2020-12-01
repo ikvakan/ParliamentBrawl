@@ -7,8 +7,8 @@ package hr.algebra.events.drag;
 
 import enums.EventGesture;
 import hr.algebra.model.Card;
-import hr.algebra.utils.NodeUtils;
-import static hr.algebra.utils.NodeUtils.CARD;
+import hr.algebra.utils.node.card.CardUtils;
+import static hr.algebra.utils.node.card.CardUtils.CARD;
 import java.io.FileNotFoundException;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -63,7 +63,7 @@ public class HandleCardDragEvents {
             return;
         }
 
-        Card card = NodeUtils.getCardFromNode(nodes);
+        Card card = CardUtils.getCardFromNode(nodes);
 
         content.put(CARD, card);
 
@@ -89,7 +89,7 @@ public class HandleCardDragEvents {
             //target - defender
             VBox target = (VBox) event.getGestureTarget();
 
-            Card defender = NodeUtils.getCardFromNode(target.getChildren());
+            Card defender = CardUtils.getCardFromNode(target.getChildren());
             defender.createImage(defender.getPicturePath());
 
             GridPane parent = (GridPane) source.getParent();
@@ -149,7 +149,7 @@ public class HandleCardDragEvents {
 
         parent.getChildren().remove(target);
 
-        parent.add(NodeUtils.createCard(defender), columnIndex, rowIndex);
+        parent.add(CardUtils.createCard(defender), columnIndex, rowIndex);
 
         setDragOverToAny(parent);
 
@@ -164,7 +164,7 @@ public class HandleCardDragEvents {
 
         parent.getChildren().remove(source);
 
-        parent.add(NodeUtils.createCard(attacker), columnIndex, rowIndex);
+        parent.add(CardUtils.createCard(attacker), columnIndex, rowIndex);
 
         setDragOverToAny(parent);
 
@@ -184,13 +184,13 @@ public class HandleCardDragEvents {
         Integer AttackerRowIndex = getRowIndex(source);
 
         parent.getChildren().remove(source);
-        parent.add(NodeUtils.createCard(attacker), attackerColIndex, AttackerRowIndex);
+        parent.add(CardUtils.createCard(attacker), attackerColIndex, AttackerRowIndex);
 
         Integer defenderColIndex = getColumnIndex(target);
         Integer defenderRowIndex = getRowIndex(target);
 
         parent.getChildren().remove(target);
-        parent.add(NodeUtils.createCard(defender), defenderColIndex, defenderRowIndex);
+        parent.add(CardUtils.createCard(defender), defenderColIndex, defenderRowIndex);
 
         setDragOverToAny(parent);
 

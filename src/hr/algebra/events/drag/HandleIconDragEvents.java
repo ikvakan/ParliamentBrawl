@@ -10,7 +10,7 @@ import hr.algebra.game.logic.GameLogic;
 import hr.algebra.model.Card;
 import hr.algebra.model.Player;
 import hr.algebra.utils.MessageUtils;
-import hr.algebra.utils.NodeUtils;
+import hr.algebra.utils.node.card.CardUtils;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
@@ -33,7 +33,7 @@ public class HandleIconDragEvents {
 
         boolean canAttack = GameLogic.canAttack(event);
 
-        if (dragboard.hasContent(NodeUtils.CARD)
+        if (dragboard.hasContent(CardUtils.CARD)
                 && helperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE) && canAttack) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
@@ -49,9 +49,9 @@ public class HandleIconDragEvents {
         VBox target = (VBox) event.getGestureTarget();
         VBox source = (VBox) event.getGestureSource();
 
-        if (db.hasContent(NodeUtils.CARD) && target == opponentIcon) {
+        if (db.hasContent(CardUtils.CARD) && target == opponentIcon) {
 
-            Card card = NodeUtils.getCardFromNode(source.getChildren());
+            Card card = CardUtils.getCardFromNode(source.getChildren());
 
             for (Node node : opponentIcon.getChildren()) {
                 if (node instanceof Label && node.getId().contentEquals(OPPONENT_HEALTH)) {
@@ -71,9 +71,9 @@ public class HandleIconDragEvents {
             dragCompleted = true;
             event.setDropCompleted(dragCompleted);
 
-        } else if (db.hasContent(NodeUtils.CARD) && target == playerIcon) {
+        } else if (db.hasContent(CardUtils.CARD) && target == playerIcon) {
 
-            Card card = NodeUtils.getCardFromNode(source.getChildren());
+            Card card = CardUtils.getCardFromNode(source.getChildren());
 
             for (Node node : playerIcon.getChildren()) {
                 if (node instanceof Label && node.getId().contentEquals(PLAYER_HEALTH)) {

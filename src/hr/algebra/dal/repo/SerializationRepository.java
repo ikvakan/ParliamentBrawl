@@ -6,6 +6,7 @@
 package hr.algebra.dal.repo;
 
 import hr.algebra.model.Card;
+import hr.algebra.model.Player;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 public class SerializationRepository implements Serializable {
 
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 4L;
 
     public SerializationRepository() {
     }
@@ -30,6 +31,21 @@ public class SerializationRepository implements Serializable {
     private List<Card> opponentHand = new ArrayList<>();
 
     private List<Card> fieldCards = new ArrayList<>();
+    
+    private List<Player> players= new ArrayList<>();
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+    
+    public void addPlayer(Player player){
+        players.add(player);
+    }
+    
 
     private static final SerializationRepository INSTANCE = new SerializationRepository();
 
@@ -83,6 +99,7 @@ public class SerializationRepository implements Serializable {
         oos.writeObject(opponentDeck);
         oos.writeObject(opponentHand);
         oos.writeObject(fieldCards);
+        oos.writeObject(players);
 
     }
 
@@ -94,18 +111,21 @@ public class SerializationRepository implements Serializable {
         opponentDeck = (List<Card>) ois.readObject();
         opponentHand = (List<Card>) ois.readObject();
         fieldCards = (List<Card>) ois.readObject();
+        players=(List<Player>) ois.readObject();
 
         INSTANCE.playerDeck.clear();
         INSTANCE.playerHand.clear();
         INSTANCE.opponentDeck.clear();
         INSTANCE.opponentHand.clear();
         INSTANCE.fieldCards.clear();
+        INSTANCE.players.clear();
         
         INSTANCE.playerDeck.addAll(playerDeck);
         INSTANCE.playerHand.addAll(playerHand);
         INSTANCE.opponentDeck.addAll(opponentDeck);
         INSTANCE.opponentHand.addAll(opponentHand);
         INSTANCE.fieldCards.addAll(fieldCards);
+        INSTANCE.players.addAll(players);
         
     }
 

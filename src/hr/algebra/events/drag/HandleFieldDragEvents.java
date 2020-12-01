@@ -7,7 +7,7 @@ package hr.algebra.events.drag;
 
 import hr.algebra.controller.CardTableController;
 import hr.algebra.model.Card;
-import hr.algebra.utils.NodeUtils;
+import hr.algebra.utils.node.card.CardUtils;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,13 +30,13 @@ public class HandleFieldDragEvents {
         boolean dragCompleted = false;
 
         Dragboard dragboard = event.getDragboard();
-        if (dragboard.hasContent(NodeUtils.CARD)) {
+        if (dragboard.hasContent(CardUtils.CARD)) {
 
-            Card copy = (Card) dragboard.getContent(NodeUtils.CARD);
+            Card copy = (Card) dragboard.getContent(CardUtils.CARD);
 
             try {
                 Card card = new Card(copy.getTitle(), copy.getAttack(), copy.getDefense(), copy.getPicturePath());
-                VBox vbox = NodeUtils.createCard(card);
+                VBox vbox = CardUtils.createCard(card);
 
                 Node node  =  (Node) event.getGestureTarget();
                 
@@ -91,7 +91,7 @@ public class HandleFieldDragEvents {
         
         
 
-        if (dragboard.hasContent(NodeUtils.CARD) && source!=target) {
+        if (dragboard.hasContent(CardUtils.CARD) && source!=target) {
             event.acceptTransferModes(TransferMode.ANY);
         }
 

@@ -6,11 +6,12 @@
 package hr.algebra.controller;
 
 import enums.Grid;
+import enums.PlayersIcon;
 import hr.algebra.factory.DeckFactory;
 import hr.algebra.model.Card;
 import hr.algebra.model.Deck;
 import hr.algebra.model.Player;
-import hr.algebra.utils.NodeUtils;
+import hr.algebra.utils.node.card.CardUtils;
 import hr.algebra.dal.repo.Repository;
 import hr.algebra.dal.repo.RepositoryFactory;
 import hr.algebra.dal.repo.SerializationRepository;
@@ -18,6 +19,7 @@ import hr.algebra.events.drag.HandleFieldDragEvents;
 import hr.algebra.events.drag.HandleIconDragEvents;
 import hr.algebra.utils.FileUtils;
 import hr.algebra.utils.SerializationUtils;
+import hr.algebra.utils.node.icon.IconUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -68,8 +70,8 @@ public class CardTableController implements Initializable {
     Integer lastColIndexOpponent;
     Integer lastRowIndexOpponent;
 
-    List<Pane> playerPanes;
-    List<Pane> opponentPanes;
+    private final String PLAYER_NAME = "Player 1";
+    private final String OPPONENT_NAME = "Player 2";
 
     @FXML
     private Pane pnOpponent, pnPlayer;
@@ -120,15 +122,14 @@ public class CardTableController implements Initializable {
 
     private void initObjects() throws FileNotFoundException, IOException {
         try {
-            
+
             playerDeck = DeckFactory.createDeck(Deck.class.getName());
             opponentDeck = DeckFactory.createDeck(Deck.class.getName());
 
-            player = new Player("Player 1");
+            player = new Player(PLAYER_NAME);
             player.setHealth(20);
-            opponent = new Player("Player 2");
+            opponent = new Player(OPPONENT_NAME);
             opponent.setHealth(20);
-            
 
         } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
                 | IllegalAccessException | InvocationTargetException | IllegalArgumentException ex) {
@@ -181,7 +182,7 @@ public class CardTableController implements Initializable {
         int row = 0;
 
         for (Card card : deck) {
-            VBox vBox = NodeUtils.createCard(card);
+            VBox vBox = CardUtils.createCard(card);
 
             grid.add(vBox, column++, row);
 
@@ -257,7 +258,7 @@ public class CardTableController implements Initializable {
                 resetLastIndex();
             }
 
-            VBox vBox = NodeUtils.createCard(playerDeck.getCardForHand());
+            VBox vBox = CardUtils.createCard(playerDeck.getCardForHand());
             gridPlayer.add(vBox, lastColIndexPlayer, lastRowIndexPlayer);
 
             System.out.println("Player deck size:" + " " + playerDeck.getDeck().size());
@@ -269,7 +270,7 @@ public class CardTableController implements Initializable {
                 resetLastIndex();
             }
 
-            VBox vBox = NodeUtils.createCard(opponentDeck.getCardForHand());
+            VBox vBox = CardUtils.createCard(opponentDeck.getCardForHand());
             gridOpponent.add(vBox, lastColIndexOpponent, lastRowIndexOpponent);
 
             System.out.println("Opponent deck size:" + " " + opponentDeck.getDeck().size());
@@ -312,6 +313,9 @@ public class CardTableController implements Initializable {
                 SerializationRepository.getInstance().setOpponentHand(ChooseGrid(Grid.OPPONENT));
                 SerializationRepository.getInstance().setFieldCards(ChooseGrid(Grid.FIELD));
 
+                SerializationRepository.getInstance().addPlayer(IconUtils.getPlayerFromPane(PlayersIcon.PLAYER_ICON, playerIcon));
+                SerializationRepository.getInstance().addPlayer(IconUtils.getPlayerFromPane(PlayersIcon.OPPONENT_ICON, opponentIcon));
+
                 SerializationUtils.write(SerializationRepository.getInstance(), file.getAbsolutePath());
             }
         } catch (IOException ex) {
@@ -320,11 +324,11 @@ public class CardTableController implements Initializable {
 
     }
 
-    private List<Card> ChooseGrid(Grid side) {
+    private List<Card> ChooseGrid(Grid grid) {
 
         List<Card> cards = new ArrayList<>();
 
-        switch (side) {
+        switch (grid) {
             case PLAYER:
                 cards = getCardsFromGrid(gridPlayer);
                 break;
@@ -348,7 +352,7 @@ public class CardTableController implements Initializable {
 
                 int columnIndex = GridPane.getColumnIndex(node);
                 int rowIndex = GridPane.getRowIndex(node);
-                Card card = NodeUtils.getCardFromNode(((VBox) node).getChildren());
+                Card card = CardUtils.getCardFromNode(((VBox) node).getChildren());
                 card.setColumnIndex(columnIndex);
                 card.setRowIndex(rowIndex);
                 list.add(card);
@@ -358,6 +362,7 @@ public class CardTableController implements Initializable {
         return list;
     }
 
+
     @FXML
     private void handleLoadData(ActionEvent event) {
         File file = FileUtils.uploadFileDialog(btnPlayerDeck.getScene().getWindow(), "ser");
@@ -365,7 +370,6 @@ public class CardTableController implements Initializable {
             try {
                 clearFields();
 
-               
                 SerializationUtils.read(file.getAbsolutePath());
 
                 populateDeckAfterLoad();
@@ -373,6 +377,8 @@ public class CardTableController implements Initializable {
                 fillGridAfterLoad(SerializationRepository.getInstance().getPlayerHand(), Grid.PLAYER);
                 fillGridAfterLoad(SerializationRepository.getInstance().getOpponentHand(), Grid.OPPONENT);
                 fillGridAfterLoad(SerializationRepository.getInstance().getFieldCards(), Grid.FIELD);
+
+                setPlayersAfterLoad(SerializationRepository.getInstance().getPlayers());
 
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
@@ -395,9 +401,9 @@ public class CardTableController implements Initializable {
 
     }
 
-    private void fillGridAfterLoad(List<Card> cards, Grid side) throws FileNotFoundException {
+    private void fillGridAfterLoad(List<Card> cards, Grid grid) throws FileNotFoundException {
 
-        switch (side) {
+        switch (grid) {
             case PLAYER:
                 fillGrid(cards, gridPlayer);
                 break;
@@ -415,7 +421,7 @@ public class CardTableController implements Initializable {
     private void fillGrid(List<Card> cards, GridPane grid) throws FileNotFoundException {
         for (Card card : cards) {
             card.createImage(card.getPicturePath());
-            VBox createCard = NodeUtils.createCard(card);
+            VBox createCard = CardUtils.createCard(card);
             grid.add(createCard, card.getColumnIndex(), card.getRowIndex());
 
         }
@@ -427,5 +433,25 @@ public class CardTableController implements Initializable {
         playerDeck.setDeck(SerializationRepository.getInstance().getPlayerDeck());
         opponentDeck.setDeck(SerializationRepository.getInstance().getOpponentDeck());
     }
+
+    private void setPlayersAfterLoad(List<Player> players) throws FileNotFoundException {
+
+        for (Player player : players) {
+            if (player.getName().contentEquals(PLAYER_NAME)) {
+                player.createDefaultImage();
+                IconUtils.modifyPlayers(player, PlayersIcon.PLAYER_ICON,playerIcon);
+            } 
+            if (player.getName().contentEquals(OPPONENT_NAME)) {
+                player.createDefaultImage();
+                IconUtils.modifyPlayers(player, PlayersIcon.OPPONENT_ICON,opponentIcon);
+            }
+
+        }
+
+    }
+
+
+
+    
 
 }

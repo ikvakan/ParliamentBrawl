@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hr.algebra.utils;
+package hr.algebra.utils.node.card;
 
+import enums.PlayersIcon;
 import hr.algebra.events.drag.HandleCardDragEvents;
 import hr.algebra.model.Card;
+import hr.algebra.model.Player;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,13 +27,15 @@ import javafx.scene.layout.VBox;
  *
  * @author IgorKvakan
  */
-public class NodeUtils {
+public class CardUtils {
 
     public static final DataFormat CARD = new DataFormat("Card");
-    
-    private static final String TITLE="Title";
-    private static final String IMAGE="Image";
-    private static final String ATT_DEF="AttDef";
+
+    private static final String TITLE = "Title";
+    private static final String IMAGE = "Image";
+    private static final String ATT_DEF = "AttDef";
+
+   
 
     public static final String DELIMITER = "/";
 
@@ -58,16 +62,14 @@ public class NodeUtils {
             try {
                 HandleCardDragEvents.dragDropped(event);
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(NodeUtils.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CardUtils.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         });
-        
 
         return vBox;
 
     }
-
 
     public static ImageView createImageView(Image image, String picPath) {
         ImageView imageView = new ImageView();
@@ -92,43 +94,81 @@ public class NodeUtils {
         lbl.setTooltip(new Tooltip(title));
         return lbl;
     }
-    
-    
-    public static Card getCardFromNode(ObservableList<Node> nodes)  {
-        Card card= new Card();
-        
+
+    public static Card getCardFromNode(ObservableList<Node> nodes) {
+        Card card = new Card();
+
         for (Node node : nodes) {
             if (node instanceof Label && node.getId().contentEquals(TITLE)) {
                 Label lbl = (Label) node;
                 card.setTitle(lbl.getText());
-                
+
             } else if (node instanceof ImageView && node.getId().contentEquals(IMAGE)) {
                 ImageView iv = (ImageView) node;
-                
+
                 card.setPicturePath((String) iv.getUserData());
-               
-                                
+
             } else if (node instanceof Label && node.getId().contentEquals(ATT_DEF)) {
                 Label lbl = (Label) node;
                 String txt = lbl.getText();
                 String[] value = txt.split(DELIMITER);
                 card.setAttack(Integer.valueOf(value[0]));
                 card.setDefense(Integer.valueOf(value[1]));
-                
+
             }
         }
-        
+
         return card;
     }
 
-    
-        public static VBox createCard(Card card) {
-        VBox vBox = NodeUtils.createVBox();
-        Label title = NodeUtils.createTitle(card.getTitle());
-        ImageView imageView = NodeUtils.createImageView(card.getImage(), card.getPicturePath());
-        Label attackDefense = NodeUtils.createAttDef(card.getAttack(), card.getDefense());
+    public static VBox createCard(Card card) {
+        VBox vBox = CardUtils.createVBox();
+        Label title = CardUtils.createTitle(card.getTitle());
+        ImageView imageView = CardUtils.createImageView(card.getImage(), card.getPicturePath());
+        Label attackDefense = CardUtils.createAttDef(card.getAttack(), card.getDefense());
         vBox.getChildren().setAll(title, imageView, attackDefense);
         return vBox;
     }
+
     
+//    
+//    public static Player getPlayerFromPane(PlayersIcon icon,VBox iconPlacerHolder) {
+//        Player player = new Player();
+//
+//        switch (icon) {
+//            case PLAYER_ICON:
+//                player = getPlayerFromVBox(iconPlacerHolder,PLAYER_NAME,PLAYER_HEALTH);
+//                break;
+//            case OPPONENT_ICON:
+//                player = getPlayerFromVBox(iconPlacerHolder,OPPONENT_NAME,OPPONENT_HEALTH);
+//                break;
+//        }
+//
+//        return player;
+//    }
+//
+//    public static Player getPlayerFromVBox(VBox iconPlacerHolder,String lblName,String lbHealth) {
+//
+//        Player player = new Player();
+//
+//        for (Node node : iconPlacerHolder.getChildrenUnmodifiable()) {
+//            if (node instanceof Label && node.getId().contentEquals(lblName)) {
+//                Label lbl=(Label)node;
+//                String name = lbl.getText();
+//                player.setName(name);
+//            }
+//            if (node instanceof Label && node.getId().contentEquals(lbHealth)) {
+//                Label lbl=(Label)node;
+//                String health = lbl.getText();
+//                player.setHealth(Integer.valueOf(health));
+//            }
+//
+//        }
+//        return player;
+//
+//    }
+//    
+    
+    
+
 }
