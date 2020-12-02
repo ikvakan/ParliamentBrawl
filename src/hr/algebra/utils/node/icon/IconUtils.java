@@ -65,10 +65,10 @@ public class IconUtils {
 
         switch (icon) {
             case PLAYER_ICON:
-                modifyIconCard(player, iconPlaceHolder,IconUtils.LBL_OPPONENT_NAME,IconUtils.LBL_PLAYER_HEALTH);
+                modifyIconCard(player, iconPlaceHolder,LBL_OPPONENT_NAME,LBL_PLAYER_HEALTH);
                 break;
             case OPPONENT_ICON:
-                modifyIconCard(player, iconPlaceHolder,IconUtils.LBL_OPPONENT_NAME,IconUtils.LBL_OPPONENT_HEALTH);
+                modifyIconCard(player, iconPlaceHolder,LBL_OPPONENT_NAME,LBL_OPPONENT_HEALTH);
                 break;
         }
     }

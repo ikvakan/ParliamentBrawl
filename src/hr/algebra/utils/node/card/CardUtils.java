@@ -5,10 +5,8 @@
  */
 package hr.algebra.utils.node.card;
 
-import enums.PlayersIcon;
 import hr.algebra.events.drag.HandleCardDragEvents;
 import hr.algebra.model.Card;
-import hr.algebra.model.Player;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -131,43 +129,7 @@ public class CardUtils {
     }
 
     
-//    
-//    public static Player getPlayerFromPane(PlayersIcon icon,VBox iconPlacerHolder) {
-//        Player player = new Player();
-//
-//        switch (icon) {
-//            case PLAYER_ICON:
-//                player = getPlayerFromVBox(iconPlacerHolder,PLAYER_NAME,PLAYER_HEALTH);
-//                break;
-//            case OPPONENT_ICON:
-//                player = getPlayerFromVBox(iconPlacerHolder,OPPONENT_NAME,OPPONENT_HEALTH);
-//                break;
-//        }
-//
-//        return player;
-//    }
-//
-//    public static Player getPlayerFromVBox(VBox iconPlacerHolder,String lblName,String lbHealth) {
-//
-//        Player player = new Player();
-//
-//        for (Node node : iconPlacerHolder.getChildrenUnmodifiable()) {
-//            if (node instanceof Label && node.getId().contentEquals(lblName)) {
-//                Label lbl=(Label)node;
-//                String name = lbl.getText();
-//                player.setName(name);
-//            }
-//            if (node instanceof Label && node.getId().contentEquals(lbHealth)) {
-//                Label lbl=(Label)node;
-//                String health = lbl.getText();
-//                player.setHealth(Integer.valueOf(health));
-//            }
-//
-//        }
-//        return player;
-//
-//    }
-//    
+
     
     
 

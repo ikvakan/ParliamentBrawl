@@ -121,6 +121,11 @@
                         <MenuItem fx:id="miLoadData" mnemonicParsing="false" onAction="#handleLoadData" text="Load data" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Documentation">
+                    <items>
+                      <MenuItem fx:id="miDocumentation" mnemonicParsing="false" onAction="#handleDocumentationOnAction" text="Create documentation" />
+                    </items>
+                  </Menu>
               </menus>
             </MenuBar>
          </top>

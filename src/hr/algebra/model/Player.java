@@ -5,6 +5,7 @@
  */
 package hr.algebra.model;
 
+import hr.algebra.annotations.Getter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,11 +18,10 @@ import javafx.scene.image.Image;
  *
  * @author IgorKvakan
  */
-public class Player implements Serializable{
-    
-    private final String PICTURE_PATH="src/assets/no_image.jpeg";
-     private static final long serialVersionUID = 3L;
+public class Player implements Serializable {
 
+    private final String PICTURE_PATH = "src/assets/no_image.jpeg";
+    private static final long serialVersionUID = 3L;
 
     private String name;
     private int health;
@@ -29,12 +29,13 @@ public class Player implements Serializable{
 
     public Player() {
     }
-    
-    
+
     public Player(String name) throws FileNotFoundException {
         createDefaultImage();
         this.name = name;
     }
+
+    @Getter(comment = "get player name")
 
     public String getName() {
         return name;
@@ -43,6 +44,8 @@ public class Player implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
+
+    @Getter(comment = "get player health")
 
     public int getHealth() {
         return health;
@@ -60,33 +63,29 @@ public class Player implements Serializable{
         this.image = image;
     }
 
-    
     public void createDefaultImage() throws FileNotFoundException {
-       this.image=new Image(new FileInputStream(PICTURE_PATH));
+        this.image = new Image(new FileInputStream(PICTURE_PATH));
     }
-    
-    
-    public boolean isDead( ){
-        boolean result=false;
-        
-        if (health <1) {
-            result =true;
+
+    public boolean isDead() {
+        boolean result = false;
+
+        if (health < 1) {
+            result = true;
         }
-        
+
         return result;
     }
-    
-    private void writeObject(ObjectOutputStream oos) throws IOException  {
+
+    private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.writeUTF(name);
         oos.writeInt(health);
     }
-   
-    private void readObject(ObjectInputStream ois) throws IOException{
-        name=ois.readUTF();
-        health=ois.readInt();
+
+    private void readObject(ObjectInputStream ois) throws IOException {
+        name = ois.readUTF();
+        health = ois.readInt();
         createDefaultImage();
     }
-    
-    
-    
+
 }

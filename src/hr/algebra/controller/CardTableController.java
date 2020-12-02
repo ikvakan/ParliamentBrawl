@@ -17,14 +17,17 @@ import hr.algebra.dal.repo.RepositoryFactory;
 import hr.algebra.dal.repo.SerializationRepository;
 import hr.algebra.events.drag.HandleFieldDragEvents;
 import hr.algebra.events.drag.HandleIconDragEvents;
+import hr.algebra.reflection.HandleReflection;
 import hr.algebra.utils.FileUtils;
 import hr.algebra.utils.SerializationUtils;
 import hr.algebra.utils.node.icon.IconUtils;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -93,6 +96,8 @@ public class CardTableController implements Initializable {
 
     @FXML
     private MenuItem miSaveData, miLoadData;
+    @FXML
+    private MenuItem miDocumentation;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -294,7 +299,7 @@ public class CardTableController implements Initializable {
 
     @FXML
     private void handleIconOnDragDropped(DragEvent event) {
-//       
+       
         HandleIconDragEvents.iconDragDropped(event, playerIcon, opponentIcon, player, opponent);
 
     }
@@ -448,6 +453,13 @@ public class CardTableController implements Initializable {
 
         }
 
+    }
+
+    @FXML
+    private void handleDocumentationOnAction(ActionEvent event) {
+        
+        HandleReflection.createDocumentation();
+        
     }
 
 

@@ -1,0 +1,112 @@
+Card
+package hr.algebra.model
+
+public Card
+extends java.lang.Object
+implements java.io.Serializable
+
+private static final long hr.algebra.model.Card.serialVersionUID
+private java.lang.String hr.algebra.model.Card.title
+private int hr.algebra.model.Card.attack
+private int hr.algebra.model.Card.defense
+private transient javafx.scene.image.Image hr.algebra.model.Card.image
+private java.lang.String hr.algebra.model.Card.picturePath
+private int hr.algebra.model.Card.columnIndex
+private int hr.algebra.model.Card.rowIndex
+private final java.lang.String hr.algebra.model.Card.SRC_DIR
+
+public class java.lang.String toString() 
+private void readObject(java.io.ObjectInputStream arg0)  throws class java.io.IOException, class java.lang.ClassNotFoundException
+private void writeObject(java.io.ObjectOutputStream arg0)  throws class java.io.IOException
+public void setTitle(java.lang.String arg0) 
+public class javafx.scene.image.Image getImage() 
+@hr.algebra.annotations.Getter(comment=gets card name for specific card)
+public class java.lang.String getTitle() 
+public void setImage(javafx.scene.image.Image arg0) 
+public void setRowIndex(int arg0) 
+@hr.algebra.annotations.Getter(comment=gets row index for specific card)
+public int getRowIndex() 
+public void setColumnIndex(int arg0) 
+@hr.algebra.annotations.Getter(comment=gets column index for specific card)
+public int getColumnIndex() 
+@hr.algebra.annotations.Getter(comment=gets picture path for specific card)
+public class java.lang.String getPicturePath() 
+public void createImage(java.lang.String arg0)  throws class java.io.FileNotFoundException
+public void setAttack(int arg0) 
+@hr.algebra.annotations.Getter(comment=gets defens number for specific card)
+public int getDefense() 
+public void setDefense(int arg0) 
+public void setPicturePath(java.lang.String arg0) 
+@hr.algebra.annotations.Getter(comment=gets attack number for specific card)
+public int getAttack() 
+
+public hr.algebra.model.Card() 
+public hr.algebra.model.Card(java.lang.String arg0, int arg1, int arg2, java.lang.String arg3)  throws class java.io.FileNotFoundException
+
+Deck
+package hr.algebra.model
+
+public Deck
+extends java.lang.Object
+implements java.io.Serializable
+
+private static final long hr.algebra.model.Deck.serialVersionUID
+private java.util.List hr.algebra.model.Deck.deck
+private java.util.List hr.algebra.model.Deck.hand
+
+private void readObject(java.io.ObjectInputStream arg0)  throws class java.io.IOException, class java.lang.ClassNotFoundException
+private void writeObject(java.io.ObjectOutputStream arg0)  throws class java.io.IOException
+@hr.algebra.annotations.Getter(comment=get list of cards for hand)
+public interface java.util.List getHand() 
+public void setDeck(java.util.List<hr.algebra.model.Card> arg0) 
+@hr.algebra.annotations.Getter(comment=get list of cards for deck)
+public interface java.util.List getDeck() 
+public void shuffleCards() 
+public class hr.algebra.model.Card getCardForHand() 
+public void createHand(java.util.List<hr.algebra.model.Card> arg0) 
+public void clearDeck() 
+public void clearHand() 
+public void removeCardFromHand(hr.algebra.model.Card arg0) 
+public void setHand(java.util.List<hr.algebra.model.Card> arg0) 
+
+public hr.algebra.model.Deck() 
+
+Game
+package hr.algebra.model
+
+public Game
+extends java.lang.Object
+
+
+
+public hr.algebra.model.Game() 
+
+Player
+package hr.algebra.model
+
+public Player
+extends java.lang.Object
+implements java.io.Serializable
+
+private final java.lang.String hr.algebra.model.Player.PICTURE_PATH
+private static final long hr.algebra.model.Player.serialVersionUID
+private java.lang.String hr.algebra.model.Player.name
+private int hr.algebra.model.Player.health
+private transient javafx.scene.image.Image hr.algebra.model.Player.image
+
+@hr.algebra.annotations.Getter(comment=get player name)
+public class java.lang.String getName() 
+private void readObject(java.io.ObjectInputStream arg0)  throws class java.io.IOException
+private void writeObject(java.io.ObjectOutputStream arg0)  throws class java.io.IOException
+public void setName(java.lang.String arg0) 
+public class javafx.scene.image.Image getImage() 
+public void setImage(javafx.scene.image.Image arg0) 
+public void setHealth(int arg0) 
+@hr.algebra.annotations.Getter(comment=get player health)
+public int getHealth() 
+public void createDefaultImage()  throws class java.io.FileNotFoundException
+public boolean isDead() 
+
+public hr.algebra.model.Player() 
+public hr.algebra.model.Player(java.lang.String arg0)  throws class java.io.FileNotFoundException
+

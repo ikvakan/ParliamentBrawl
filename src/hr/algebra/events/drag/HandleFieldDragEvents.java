@@ -59,13 +59,13 @@ public class HandleFieldDragEvents {
                     
                     GridPane grid=(GridPane)root;
                     
-                    grid.getChildren().remove(source); //get column and row
+                    grid.getChildren().remove(source); 
                   
 
                 } else if (root instanceof GridPane && root.getId().contentEquals("gridOpponent")) {
                     GridPane grid=(GridPane)root;
 
-                    grid.getChildren().remove(source); //get column and row
+                    grid.getChildren().remove(source);
                    
                 }
 

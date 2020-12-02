@@ -5,6 +5,7 @@
  */
 package hr.algebra.model;
 
+import hr.algebra.annotations.Getter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,13 +24,12 @@ public class Card implements Serializable {
     private static final long serialVersionUID = 1L;
     //public static final DataFormat CARD = new DataFormat("Card");
 
-
     private String title;
     private int attack;
     private int defense;
     private transient Image image;
     private String picturePath;
-    
+
     private int columnIndex;
     private int rowIndex;
 
@@ -41,12 +41,11 @@ public class Card implements Serializable {
 
     public Card(String title, int attack, int defense, String picturePath) throws FileNotFoundException {
 
-
         this.title = title;
         this.attack = attack;
         this.defense = defense;
         this.picturePath = picturePath;
-        
+
         createImage(picturePath);
     }
 
@@ -55,6 +54,7 @@ public class Card implements Serializable {
         this.image = new Image(new FileInputStream(SRC_DIR + File.separator + path));
     }
 
+    @Getter(comment = "gets column index for specific card")
     public int getColumnIndex() {
         return columnIndex;
     }
@@ -62,6 +62,8 @@ public class Card implements Serializable {
     public void setColumnIndex(int columnIndex) {
         this.columnIndex = columnIndex;
     }
+
+    @Getter(comment = "gets row index for specific card")
 
     public int getRowIndex() {
         return rowIndex;
@@ -71,7 +73,7 @@ public class Card implements Serializable {
         this.rowIndex = rowIndex;
     }
 
-    
+    @Getter(comment = "gets attack number for specific card")
 
     public int getAttack() {
         return attack;
@@ -80,6 +82,8 @@ public class Card implements Serializable {
     public void setAttack(int attack) {
         this.attack = attack;
     }
+
+    @Getter(comment = "gets defens number for specific card")
 
     public int getDefense() {
         return defense;
@@ -97,6 +101,8 @@ public class Card implements Serializable {
         this.image = image;
     }
 
+    @Getter(comment = "gets card name for specific card")
+
     public String getTitle() {
         return title;
     }
@@ -104,6 +110,8 @@ public class Card implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    @Getter(comment = "gets picture path for specific card")
 
     public String getPicturePath() {
         return picturePath;
@@ -132,8 +140,8 @@ public class Card implements Serializable {
         attack = ois.readInt();
         defense = ois.readInt();
         picturePath = ois.readUTF();
-        columnIndex=ois.readInt();
-        rowIndex=ois.readInt();
+        columnIndex = ois.readInt();
+        rowIndex = ois.readInt();
         createImage(picturePath);
     }
 

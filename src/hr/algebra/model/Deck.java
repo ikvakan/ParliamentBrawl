@@ -5,6 +5,7 @@
  */
 package hr.algebra.model;
 
+import hr.algebra.annotations.Getter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,10 +14,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Deck implements Serializable{
+public class Deck implements Serializable {
 
-     private static final long serialVersionUID = 2L;
-    
+    private static final long serialVersionUID = 2L;
+
     private List<Card> deck;
     private List<Card> hand;
 
@@ -27,11 +28,10 @@ public class Deck implements Serializable{
 
     }
 
-    
-    
 //    public Deck(List<Card> cards) {
 //        this.deck = cards;
 //    }
+    @Getter(comment = "get list of cards for hand")
 
     public List<Card> getHand() {
         return hand;
@@ -44,6 +44,8 @@ public class Deck implements Serializable{
     public void setDeck(List<Card> deck) {
         this.deck = deck;
     }
+
+    @Getter(comment = "get list of cards for deck")
 
     public List<Card> getDeck() {
         return deck;
@@ -76,12 +78,12 @@ public class Deck implements Serializable{
 
     public Card getCardForHand() {
 
-       // hand.clear();
-        Card card=deck.get(deck.size() -1);
+        // hand.clear();
+        Card card = deck.get(deck.size() - 1);
         deck.remove(card);
-        
+
         return card;
-        
+
     }
 
     public void removeCardFromHand(Card card) {
@@ -96,13 +98,9 @@ public class Deck implements Serializable{
     }
 
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        deck=(List<Card>)ois.readObject();
-        hand=(List<Card>)ois.readObject();
-        
+        deck = (List<Card>) ois.readObject();
+        hand = (List<Card>) ois.readObject();
+
     }
-    
-    
-    
-    
 
 }
