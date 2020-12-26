@@ -49,6 +49,7 @@
                      </font></Label>
                </children>
             </VBox>
+            <Label fx:id="lblTest" layoutX="171.0" layoutY="107.0" prefHeight="17.0" prefWidth="97.0" text="Label" />
          </children>
       </Pane>
    </bottom>

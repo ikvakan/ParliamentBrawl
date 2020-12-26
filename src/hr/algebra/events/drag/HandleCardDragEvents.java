@@ -65,8 +65,10 @@ public class HandleCardDragEvents {
 
         Card card = CardUtils.getCardFromNode(nodes);
 
+        //card stavljam u output stream i saljem na server-klijent ili drag dropped attacker-defender ?? server klijent razmjena ??
+        
         content.put(CARD, card);
-
+        
         dragboard.setContent(content);
 
         //System.out.println(dragboard.getContent(CARD));
@@ -170,6 +172,8 @@ public class HandleCardDragEvents {
 
     }
 
+     
+    
     private static void removeBothCard(GridPane parent, VBox source, VBox target) {
 
         parent.getChildren().remove(source);

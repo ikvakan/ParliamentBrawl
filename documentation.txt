@@ -23,22 +23,22 @@ public class javafx.scene.image.Image getImage()
 @hr.algebra.annotations.Getter(comment=gets card name for specific card)
 public class java.lang.String getTitle() 
 public void setImage(javafx.scene.image.Image arg0) 
+public void setColumnIndex(int arg0) 
 public void setRowIndex(int arg0) 
 @hr.algebra.annotations.Getter(comment=gets row index for specific card)
 public int getRowIndex() 
-public void setColumnIndex(int arg0) 
 @hr.algebra.annotations.Getter(comment=gets column index for specific card)
 public int getColumnIndex() 
+public void createImage(java.lang.String arg0)  throws class java.io.FileNotFoundException
 @hr.algebra.annotations.Getter(comment=gets picture path for specific card)
 public class java.lang.String getPicturePath() 
-public void createImage(java.lang.String arg0)  throws class java.io.FileNotFoundException
 public void setAttack(int arg0) 
-@hr.algebra.annotations.Getter(comment=gets defens number for specific card)
-public int getDefense() 
 public void setDefense(int arg0) 
-public void setPicturePath(java.lang.String arg0) 
 @hr.algebra.annotations.Getter(comment=gets attack number for specific card)
 public int getAttack() 
+@hr.algebra.annotations.Getter(comment=gets defens number for specific card)
+public int getDefense() 
+public void setPicturePath(java.lang.String arg0) 
 
 public hr.algebra.model.Card() 
 public hr.algebra.model.Card(java.lang.String arg0, int arg1, int arg2, java.lang.String arg3)  throws class java.io.FileNotFoundException
@@ -62,12 +62,12 @@ public void setDeck(java.util.List<hr.algebra.model.Card> arg0)
 @hr.algebra.annotations.Getter(comment=get list of cards for deck)
 public interface java.util.List getDeck() 
 public void shuffleCards() 
-public class hr.algebra.model.Card getCardForHand() 
 public void createHand(java.util.List<hr.algebra.model.Card> arg0) 
+public class hr.algebra.model.Card getCardForHand() 
 public void clearDeck() 
+public void setHand(java.util.List<hr.algebra.model.Card> arg0) 
 public void clearHand() 
 public void removeCardFromHand(hr.algebra.model.Card arg0) 
-public void setHand(java.util.List<hr.algebra.model.Card> arg0) 
 
 public hr.algebra.model.Deck() 
 
@@ -104,8 +104,8 @@ public void setImage(javafx.scene.image.Image arg0)
 public void setHealth(int arg0) 
 @hr.algebra.annotations.Getter(comment=get player health)
 public int getHealth() 
-public void createDefaultImage()  throws class java.io.FileNotFoundException
 public boolean isDead() 
+public void createDefaultImage()  throws class java.io.FileNotFoundException
 
 public hr.algebra.model.Player() 
 public hr.algebra.model.Player(java.lang.String arg0)  throws class java.io.FileNotFoundException

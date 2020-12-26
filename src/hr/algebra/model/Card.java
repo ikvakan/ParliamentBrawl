@@ -48,6 +48,14 @@ public class Card implements Serializable {
 
         createImage(picturePath);
     }
+    
+    public Card(String title, int attack, int defense) throws FileNotFoundException {
+
+        this.title = title;
+        this.attack = attack;
+        this.defense = defense;
+        
+    }
 
     public void createImage(String path) throws FileNotFoundException {
 
@@ -133,6 +141,7 @@ public class Card implements Serializable {
         oos.writeUTF(picturePath);
         oos.writeInt(columnIndex);
         oos.writeInt(rowIndex);
+        
     }
 
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {

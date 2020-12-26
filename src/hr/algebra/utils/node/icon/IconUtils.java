@@ -21,8 +21,7 @@ public class IconUtils {
     private static final String LBL_OPPONENT_NAME = "lbOpponentName";
     private static final String LBL_PLAYER_HEALTH = "lbPlayerHealth";
     private static final String LBL_OPPONENT_HEALTH = "lbOpponentHealth";
-    private static final String LBL_PLAYER_IMAGE = "imagePlayer";
-    private static final String LBL_OPPONENT_IMAGE = "imageOpponent";
+    
     
 
     public static Player getPlayerFromPane(PlayersIcon icon, VBox iconPlacerHolder) {
@@ -65,7 +64,7 @@ public class IconUtils {
 
         switch (icon) {
             case PLAYER_ICON:
-                modifyIconCard(player, iconPlaceHolder,LBL_OPPONENT_NAME,LBL_PLAYER_HEALTH);
+                modifyIconCard(player, iconPlaceHolder,LBL_PLAYER_NAME,LBL_PLAYER_HEALTH);
                 break;
             case OPPONENT_ICON:
                 modifyIconCard(player, iconPlaceHolder,LBL_OPPONENT_NAME,LBL_OPPONENT_HEALTH);

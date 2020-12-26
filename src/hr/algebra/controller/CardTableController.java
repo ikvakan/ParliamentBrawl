@@ -17,17 +17,17 @@ import hr.algebra.dal.repo.RepositoryFactory;
 import hr.algebra.dal.repo.SerializationRepository;
 import hr.algebra.events.drag.HandleFieldDragEvents;
 import hr.algebra.events.drag.HandleIconDragEvents;
+import hr.algebra.net.GameClient;
+
 import hr.algebra.reflection.HandleReflection;
 import hr.algebra.utils.FileUtils;
 import hr.algebra.utils.SerializationUtils;
 import hr.algebra.utils.node.icon.IconUtils;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -57,6 +57,10 @@ import javafx.scene.layout.VBox;
 public class CardTableController implements Initializable {
 
     private Repository repository;
+
+    GameClient gameClient;
+
+    private boolean isHost = false;
 
     private Player player;
     private Player opponent;
@@ -98,12 +102,15 @@ public class CardTableController implements Initializable {
     private MenuItem miSaveData, miLoadData;
     @FXML
     private MenuItem miDocumentation;
+    @FXML
+    private Label lblTest;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        //Optional<ButtonType> result =MessageUtils.ConfirmMessage("Start", "Start the game ?").showAndWait();
         try {
+
+            initClient();
             initCardRepository();
             initObjects();
             initDragAndDrop();
@@ -299,7 +306,7 @@ public class CardTableController implements Initializable {
 
     @FXML
     private void handleIconOnDragDropped(DragEvent event) {
-       
+
         HandleIconDragEvents.iconDragDropped(event, playerIcon, opponentIcon, player, opponent);
 
     }
@@ -366,7 +373,6 @@ public class CardTableController implements Initializable {
 
         return list;
     }
-
 
     @FXML
     private void handleLoadData(ActionEvent event) {
@@ -444,11 +450,11 @@ public class CardTableController implements Initializable {
         for (Player player : players) {
             if (player.getName().contentEquals(PLAYER_NAME)) {
                 player.createDefaultImage();
-                IconUtils.modifyPlayers(player, PlayersIcon.PLAYER_ICON,playerIcon);
-            } 
+                IconUtils.modifyPlayers(player, PlayersIcon.PLAYER_ICON, playerIcon);
+            }
             if (player.getName().contentEquals(OPPONENT_NAME)) {
                 player.createDefaultImage();
-                IconUtils.modifyPlayers(player, PlayersIcon.OPPONENT_ICON,opponentIcon);
+                IconUtils.modifyPlayers(player, PlayersIcon.OPPONENT_ICON, opponentIcon);
             }
 
         }
@@ -457,13 +463,19 @@ public class CardTableController implements Initializable {
 
     @FXML
     private void handleDocumentationOnAction(ActionEvent event) {
-        
+
         HandleReflection.createDocumentation();
-        
+
     }
 
+    private void initClient() {
+        gameClient = new GameClient(this);
+        gameClient.setDaemon(true);
+        gameClient.start();
+    }
 
-
-    
+    public void testClient(String msg) {
+        lblTest.setText(msg);
+    }
 
 }
