@@ -17,11 +17,13 @@ import hr.algebra.dal.repo.RepositoryFactory;
 import hr.algebra.dal.repo.SerializationRepository;
 import hr.algebra.events.drag.HandleFieldDragEvents;
 import hr.algebra.events.drag.HandleIconDragEvents;
+import hr.algebra.model.GameStateModel;
 import hr.algebra.net.GameClient;
 
 import hr.algebra.reflection.HandleReflection;
 import hr.algebra.utils.FileUtils;
 import hr.algebra.utils.SerializationUtils;
+import hr.algebra.utils.net.ProccesResponseData;
 import hr.algebra.utils.node.icon.IconUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,6 +35,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -65,8 +68,8 @@ public class CardTableController implements Initializable {
     private Player player;
     private Player opponent;
 
-    private Deck playerDeck;
-    private Deck opponentDeck;
+    public Deck playerDeck;
+    public Deck opponentDeck;
 
     Integer columnIndex = 0;
     Integer rowIndex = 0;
@@ -77,15 +80,19 @@ public class CardTableController implements Initializable {
     Integer lastColIndexOpponent;
     Integer lastRowIndexOpponent;
 
-    private final String PLAYER_NAME = "Player 1";
-    private final String OPPONENT_NAME = "Player 2";
+    public final String PLAYER_NAME = "Player 1";
+    public final String OPPONENT_NAME = "Player 2";
 
     @FXML
     private Pane pnOpponent, pnPlayer;
     @FXML
     private Button btnPlayerDeck, btnOpponentDeck;
     @FXML
-    private GridPane gridPlayer, gridField, gridOpponent;
+    public GridPane gridPlayer;
+    @FXML
+    public GridPane gridField;
+    @FXML
+    public GridPane gridOpponent;
 
     @FXML
     private Label lbOpponentHealth, lbPlayerName, lbPlayerHealth, lbOpponentName;
@@ -96,7 +103,9 @@ public class CardTableController implements Initializable {
     private Pane playerPosition1, playerPosition2, playerPosition3, opponentPosition1, opponentPosition2, opponentPosition3;
 
     @FXML
-    private VBox playerIcon, opponentIcon;
+    public VBox playerIcon;
+    @FXML
+    public VBox opponentIcon;
 
     @FXML
     private MenuItem miSaveData, miLoadData;
@@ -168,10 +177,10 @@ public class CardTableController implements Initializable {
     private void populateDeck() throws FileNotFoundException, Exception {
 
         playerDeck.setDeck(repository.selectCards());
-        playerDeck.shuffleCards();
+        // playerDeck.shuffleCards();
 
         opponentDeck.setDeck(repository.selectCards());
-        opponentDeck.shuffleCards();
+        //opponentDeck.shuffleCards();
 
     }
 
@@ -336,7 +345,7 @@ public class CardTableController implements Initializable {
 
     }
 
-    private List<Card> ChooseGrid(Grid grid) {
+    public List<Card> ChooseGrid(Grid grid) {
 
         List<Card> cards = new ArrayList<>();
 
@@ -397,7 +406,8 @@ public class CardTableController implements Initializable {
         }
     }
 
-    private void clearFields() {
+    public void clearFields() {
+
         gridPlayer.getChildren().removeAll(gridPlayer.getChildren());
         gridOpponent.getChildren().removeAll(gridOpponent.getChildren());
 
@@ -438,7 +448,7 @@ public class CardTableController implements Initializable {
         }
     }
 
-    private void populateDeckAfterLoad() {
+    public void populateDeckAfterLoad() {
         playerDeck.clearDeck();
         opponentDeck.clearDeck();
         playerDeck.setDeck(SerializationRepository.getInstance().getPlayerDeck());
@@ -470,6 +480,7 @@ public class CardTableController implements Initializable {
 
     private void initClient() {
         gameClient = new GameClient(this);
+
         gameClient.setDaemon(true);
         gameClient.start();
     }
@@ -478,4 +489,111 @@ public class CardTableController implements Initializable {
         lblTest.setText(msg);
     }
 
+    public void testClientMessageHandler(String msg) {
+
+        Platform.runLater(() -> {
+            lblTest.setText(msg);
+
+        });
+    }
+
+
+    public void refreshGameState(GameStateModel gameStateModel, CardTableController tableController) { //param controller?
+        Platform.runLater(() -> {
+            try {
+                ProccesResponseData.refreshGameState(gameStateModel, tableController);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        });
+    
+
+    
+//    public void refreshGameState(GameStateModel gameStateModel) { //param controller?
+//        Platform.runLater(() -> {
+//            try {
+//                clearFieldsClientThread();
+//                refreshDeck(gameStateModel);
+//
+//                refreshGrid(gameStateModel.getPlayerHand(), Grid.PLAYER );
+//                refreshGrid(gameStateModel.getOpponentHand(), Grid.OPPONENT);
+//                refreshGrid(gameStateModel.getFieldCards(), Grid.FIELD);
+//
+//                setPlayersClientThread(gameStateModel.getPlayers());
+//            } catch (FileNotFoundException ex) {
+//                Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//
+//        });
+//
+//    }
+//    
+//     private  void refreshDeck(GameStateModel gameStateModel ) {
+//        
+//        playerDeck.clearDeck();
+//        opponentDeck.clearDeck();
+//        playerDeck.setDeck(gameStateModel.getPlayerDeck());
+//        opponentDeck.setDeck(gameStateModel.getOpponentDeck());
+//    }
+//    
+//    private  void clearFieldsClientThread() {
+//        
+//       
+//        gridPlayer.getChildren().removeAll(gridPlayer.getChildren());
+//        gridOpponent.getChildren().removeAll(gridOpponent.getChildren());
+//
+//        ObservableList<Node> list = FXCollections.observableArrayList();
+//
+//        for (Node node : gridField.getChildrenUnmodifiable()) {
+//            if (node instanceof VBox) {
+//                list.add(node);
+//            }
+//        }
+//        gridField.getChildren().removeAll(list);
+//       
+//    }
+//    
+//   private  void refreshGrid(List<Card> cards, Grid grid) throws FileNotFoundException  {
+//
+//        switch (grid) {
+//            case PLAYER:
+//                fillGridClientThread(cards, gridPlayer);
+//                break;
+//            case OPPONENT:
+//                fillGridClientThread(cards, gridOpponent);
+//                break;
+//            case FIELD:
+//                fillGridClientThread(cards, gridField);
+//                break;
+//
+//        }
+//
+//    }
+//   
+//   private  void fillGridClientThread(List<Card> cards, GridPane grid) throws FileNotFoundException {
+//        for (Card card : cards) {
+//            card.createImage(card.getPicturePath());
+//            VBox createCard = CardUtils.createCard(card);
+//            grid.add(createCard, card.getColumnIndex(), card.getRowIndex());
+//
+//        }
+//    }
+//    
+//   private  void setPlayersClientThread(List<Player> players) throws FileNotFoundException {
+//
+//        for (Player player : players) {
+//            if (player.getName().contentEquals(PLAYER_NAME)) {
+//                player.createDefaultImage();
+//                IconUtils.modifyPlayers(player, PlayersIcon.PLAYER_ICON, playerIcon);
+//            }
+//            if (player.getName().contentEquals(OPPONENT_NAME)) {
+//                player.createDefaultImage();
+//                IconUtils.modifyPlayers(player, PlayersIcon.OPPONENT_ICON, opponentIcon);
+//            }
+//
+//        }
+//
+//    }
+    }
 }

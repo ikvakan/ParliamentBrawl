@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 /**
  *
@@ -24,6 +25,17 @@ public class SerializationUtils {
 
     public static Object read(String fileName) throws IOException, ClassNotFoundException {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+            return ois.readObject();
+        }
+    }
+     public static void write(Object object,Socket client) throws IOException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream())) {
+            oos.writeObject(object);
+        }
+    }
+
+    public static Object read(Socket client) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream ois = new ObjectInputStream(client.getInputStream())) {
             return ois.readObject();
         }
     }

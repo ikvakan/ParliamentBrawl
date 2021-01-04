@@ -31,34 +31,43 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         
-         Optional<ButtonType> result = MessageUtils.ConfirmMessage("Start", "Start server ?").showAndWait();
-            
+//         Optional<ButtonType> result = MessageUtils.ConfirmMessage("Start", "Start server ?").showAndWait();
+//            
+//        
+//
+//        if (result.get() == ButtonType.OK) {
+//            try {
+//                Parent root = FXMLLoader.load(getClass().getResource(SERVER));
+//                Scene scene = new Scene(root, 600, 400);
+//
+//                primaryStage.setTitle(STAGE_TITLE);
+//                primaryStage.setScene(scene);
+//                primaryStage.show();
+//                isServerStardted = true;
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//       
+//        } else if (result.get()==ButtonType.CANCEL) {
+//            Parent root = FXMLLoader.load(getClass().getResource(TABLE));
+//
+//            Scene scene = new Scene(root, 1200, 800);
+//
+//            primaryStage.setTitle(STAGE_TITLE);
+//            primaryStage.setScene(scene);
+//            primaryStage.show();
+//        }
         
-
-        if (result.get() == ButtonType.OK) {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource(SERVER));
-                Scene scene = new Scene(root, 600, 400);
-
-                primaryStage.setTitle(STAGE_TITLE);
-                primaryStage.setScene(scene);
-                primaryStage.show();
-                isServerStardted = true;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-       
-        } else if (result.get()==ButtonType.CANCEL) {
-            Parent root = FXMLLoader.load(getClass().getResource(TABLE));
+        
+        Parent root = FXMLLoader.load(getClass().getResource(TABLE));
 
             Scene scene = new Scene(root, 1200, 800);
 
             primaryStage.setTitle(STAGE_TITLE);
             primaryStage.setScene(scene);
             primaryStage.show();
-        }
 
     }
 

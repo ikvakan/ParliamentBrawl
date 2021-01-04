@@ -8,6 +8,7 @@ package hr.algebra.utils.node.card;
 import hr.algebra.events.drag.HandleCardDragEvents;
 import hr.algebra.model.Card;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,10 +62,19 @@ public class CardUtils {
                 HandleCardDragEvents.dragDropped(event);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(CardUtils.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(CardUtils.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         });
 
+        vBox.setOnDragDone(event->{
+            HandleCardDragEvents.dragDone(event);
+        
+        });
+        
+        
+        
         return vBox;
 
     }

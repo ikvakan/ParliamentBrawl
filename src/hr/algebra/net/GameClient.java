@@ -6,10 +6,12 @@
 package hr.algebra.net;
 
 import hr.algebra.controller.CardTableController;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import hr.algebra.model.GameStateModel;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  *
@@ -20,49 +22,74 @@ public class GameClient extends Thread {
     private static final String HOST = "localhost";
     private static final int PORT = 1089;
 
-    private CardTableController tableController;
+    private boolean objectMoved = false;
+
+    private static CardTableController tableController;
+
+    private static ObjectInputStream ois;
+    private static ObjectOutputStream oos;
+
 
     public GameClient(CardTableController tableController) {
         this.tableController = tableController;
 
     }
+   
+    private static final LinkedBlockingDeque<GameStateModel> gameState = new LinkedBlockingDeque<>();
 
-  
+//    public static void trigger(String title) {
+//        cards.add(title);
+//    }
+    public static void trigger(GameStateModel gameStateModel) {
+        gameState.add(gameStateModel);
+    }
+
+    public static CardTableController getController() {
+        return tableController;
+    }
+
     @Override
-    public void run() {
+    public void run() { // ispisuje podatke koje dobia od handlera na kontroler
 
         try (Socket clientSocket = new Socket(HOST, PORT)) {
 
-            //String msg = "Client connection established";
+            initIOStream(clientSocket);
+            ServerHandler serverHandler = new ServerHandler(clientSocket,tableController,ois,oos);
+            serverHandler.start();
 
-            sendMessageToServer(clientSocket, "Client connection established");
+            while (true) {
 
-            tableController.testClient(recieveMessage(clientSocket));
-            
-            
+                if (!gameState.isEmpty()) {
+                    sendDataToServer();
+                    
+
+                }
+
+            }
 
         } catch (Exception e) {
-            e.printStackTrace(); //maknuti da ne smeta jer nema konekcije
 
+            throw new RuntimeException("Client not connected to server");
+            //e.printStackTrace(); //maknuti da ne smeta jer nema konekcije
         }
 
     }
 
-    private void sendMessageToServer(Socket client, String msg) throws IOException {
-        DataOutputStream dos = new DataOutputStream(client.getOutputStream());
-        //DataInputStream dis = new DataInputStream(client.getInputStream());
-        dos.writeUTF(msg);
+    private void sendDataToServer() throws IOException {
+
+        oos.writeObject(gameState.getFirst());
         
-        System.out.println(msg);
+        
+        gameState.clear();
+        oos.flush();
+
     }
 
-    private String recieveMessage(Socket client) throws IOException {
-        //DataOutputStream dos = new DataOutputStream(client.getOutputStream());
-        DataInputStream dis = new DataInputStream(client.getInputStream());
-        String msg = (String) dis.readUTF();
 
-        return msg;
-
+    private void initIOStream(Socket clientSocket) throws IOException {
+        
+        oos = new ObjectOutputStream(clientSocket.getOutputStream());
+        ois = new ObjectInputStream(clientSocket.getInputStream());
     }
 
 }
