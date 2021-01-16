@@ -28,20 +28,33 @@ public class HandleIconDragEvents {
     private static final String OPPONENT_HEALTH = "lbOpponentHealth";
     private static final String PLAYER_HEALTH = "lbPlayerHealth";
 
+    private HandleIconDragEvents() {
+    }
+    
+    
+    private static class SingletonHelper{
+        private static final HandleIconDragEvents INSTANCE= new HandleIconDragEvents();
+    }
+    
+    public static HandleIconDragEvents getInstance(){
+        return  SingletonHelper.INSTANCE;
+    }    
+    
+
     public static void iconDragOver(DragEvent event) {
         Dragboard dragboard = event.getDragboard();
 
         boolean canAttack = GameLogic.canAttack(event);
 
         if (dragboard.hasContent(CardUtils.CARD)
-                && helperDragMethods.findParentFromNode("gridField", event, EventGesture.SOURCE) && canAttack) {
+                && helperDragMethods.getInstance().findParentFromNode("gridField", event, EventGesture.SOURCE) && canAttack) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
 
         event.consume();
     }
 
-    public static void iconDragDropped(DragEvent event, VBox playerIcon, VBox opponentIcon, Player player, Player opponent) {
+    public  void iconDragDropped(DragEvent event, VBox playerIcon, VBox opponentIcon, Player player, Player opponent) {
         boolean dragCompleted = false;
 
         Dragboard db = event.getDragboard();

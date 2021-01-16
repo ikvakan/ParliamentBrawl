@@ -48,7 +48,7 @@ public class Deck implements Serializable {
     @Getter(comment = "get list of cards for deck")
 
     public List<Card> getDeck() {
-        return deck;
+        return new ArrayList<>(deck);
     }
 
     public void clearDeck() {

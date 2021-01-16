@@ -13,7 +13,6 @@ import hr.algebra.model.Card;
 import hr.algebra.model.GameStateModel;
 import hr.algebra.net.GameClient;
 
-
 import hr.algebra.utils.node.card.CardUtils;
 import static hr.algebra.utils.node.card.CardUtils.CARD;
 import hr.algebra.utils.node.icon.IconUtils;
@@ -36,12 +35,29 @@ import javafx.scene.layout.VBox;
  */
 public class HandleCardDragEvents {
 
+   
+    
+    private HandleCardDragEvents() {
+    }
+
+    private static class SingletonHelper{
+        private static final HandleCardDragEvents INSTANCE=new HandleCardDragEvents();
+    }
+    
+    public static HandleCardDragEvents getInstance(){
+        return SingletonHelper.INSTANCE;
+    }
+    
     private static CardTableController controller;
+    
 
-    public static void dragDone(DragEvent event) {
+    //private static GameStateModel gameStateModel= new GameStateModel();
+    public  void dragDone(DragEvent event) {
 
-        //Card card = new Card();
+        //System.out.println("test");
+        
         TransferMode tm = event.getTransferMode();
+      
         controller = GameClient.getController();
 
         if (tm == TransferMode.MOVE) {
@@ -50,9 +66,7 @@ public class HandleCardDragEvents {
 
             if (dragboard.hasContent(CARD)) {
 
-                //card = (Card) dragboard.getContent(CARD);
-
-                //GameClient.trigger(card.getTitle());
+             
                 dataTransfer();
 
             }
@@ -63,28 +77,26 @@ public class HandleCardDragEvents {
 
     }
 
-    private static void dataTransfer() {
+    private  void dataTransfer() {
 
-        GameStateModel gameStateModel= new GameStateModel();
+        GameStateModel gameStateModel = new GameStateModel();
 
         gameStateModel.setPlayerDeck(controller.playerDeck.getDeck());
         gameStateModel.setOpponentDeck(controller.opponentDeck.getDeck());
-        
+
         gameStateModel.setPlayerHand(controller.ChooseGrid(Grid.PLAYER));
         gameStateModel.setOpponentHand(controller.ChooseGrid(Grid.OPPONENT));
         gameStateModel.setFieldCards(controller.ChooseGrid(Grid.FIELD));
-        
+
         gameStateModel.addPlayer(IconUtils.getPlayerFromPane(PlayersIcon.PLAYER_ICON, controller.playerIcon));
         gameStateModel.addPlayer(IconUtils.getPlayerFromPane(PlayersIcon.OPPONENT_ICON, controller.opponentIcon));
-        
-        
-        GameClient.trigger(gameStateModel); 
-        //GameClient.trigger(card.getTitle());
 
+        GameClient.trigger(gameStateModel);
+
+       
     }
 
-
-    public static void dragOver(DragEvent event) {
+    public  void dragOver(DragEvent event) {
 
         Dragboard db = event.getDragboard();
 
@@ -93,8 +105,8 @@ public class HandleCardDragEvents {
 
         if (db.hasContent(CARD)
                 && source != target
-                && !(helperDragMethods.findParentFromNode("gridPlayer", event, EventGesture.SOURCE)
-                || helperDragMethods.findParentFromNode("gridOpponent", event, EventGesture.SOURCE))) {
+                && !(helperDragMethods.getInstance().findParentFromNode("gridPlayer", event, EventGesture.SOURCE)
+                || helperDragMethods.getInstance().findParentFromNode("gridOpponent", event, EventGesture.SOURCE))) {
 
             event.acceptTransferModes(TransferMode.ANY);
 
@@ -104,7 +116,7 @@ public class HandleCardDragEvents {
 
     }
 
-    public static void dragDetected(MouseEvent event) {
+    public  void dragDetected(MouseEvent event) {
 
         VBox source = (VBox) event.getSource();
 
@@ -121,17 +133,15 @@ public class HandleCardDragEvents {
 
         Card card = CardUtils.getCardFromNode(nodes);
 
-        
         content.put(CARD, card);
 
         dragboard.setContent(content);
 
-        
         event.consume();
 
     }
 
-    public static void dragDropped(DragEvent event) throws FileNotFoundException, IOException {
+    public  void dragDropped(DragEvent event) throws FileNotFoundException, IOException {
 
         boolean dragCompleted = false;
         Dragboard dragboard = event.getDragboard();
@@ -189,18 +199,16 @@ public class HandleCardDragEvents {
 
             }
 
-            
             dragCompleted = true;
         }
 
         event.setDropCompleted(dragCompleted);
 
-
         event.consume();
 
     }
 
-    private static void removeAttacker(GridPane parent, VBox source, VBox target, Card defender) {
+    private  void removeAttacker(GridPane parent, VBox source, VBox target, Card defender) {
 
         parent.getChildren().remove(source);
 
@@ -215,7 +223,7 @@ public class HandleCardDragEvents {
 
     }
 
-    private static void removeDefender(GridPane parent, VBox source, VBox target, Card attacker) {
+    private  void removeDefender(GridPane parent, VBox source, VBox target, Card attacker) {
 
         parent.getChildren().remove(target);
 
@@ -230,7 +238,7 @@ public class HandleCardDragEvents {
 
     }
 
-    private static void removeBothCard(GridPane parent, VBox source, VBox target) {
+    private  void removeBothCard(GridPane parent, VBox source, VBox target) {
 
         parent.getChildren().remove(source);
         parent.getChildren().remove(target);
@@ -238,7 +246,7 @@ public class HandleCardDragEvents {
         setDragOverToAny(parent);
     }
 
-    private static void modifyCards(GridPane parent, VBox source, VBox target, Card attacker, Card defender) {
+    private  void modifyCards(GridPane parent, VBox source, VBox target, Card attacker, Card defender) {
 
         Integer attackerColIndex = getColumnIndex(source);
         Integer AttackerRowIndex = getRowIndex(source);

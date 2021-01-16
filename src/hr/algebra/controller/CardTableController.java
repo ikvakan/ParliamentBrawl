@@ -40,9 +40,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -51,6 +53,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -59,11 +62,12 @@ import javafx.scene.layout.VBox;
  */
 public class CardTableController implements Initializable {
 
+    private static final String CLIENT_CHAT = "hr/algebra/view/ClientChat.fxml";
+    private static final String SERVER_CHAT = "hr/algebra/view/ServerChat.fxml";
+
     private Repository repository;
 
     GameClient gameClient;
-
-    private boolean isHost = false;
 
     private Player player;
     private Player opponent;
@@ -79,7 +83,8 @@ public class CardTableController implements Initializable {
 
     Integer lastColIndexOpponent;
     Integer lastRowIndexOpponent;
-
+    
+    
     public final String PLAYER_NAME = "Player 1";
     public final String OPPONENT_NAME = "Player 2";
 
@@ -111,13 +116,17 @@ public class CardTableController implements Initializable {
     private MenuItem miSaveData, miLoadData;
     @FXML
     private MenuItem miDocumentation;
-    @FXML
     private Label lblTest;
+    @FXML
+    private MenuItem miStartServer;
+    @FXML
+    private MenuItem miStartClient;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         try {
+            
 
             initClient();
             initCardRepository();
@@ -164,11 +173,11 @@ public class CardTableController implements Initializable {
         ObservableList<Node> panes = gridField.getChildren();
 
         panes.forEach(p -> p.setOnDragOver((DragEvent event) -> {
-            HandleFieldDragEvents.dragOver(event);
+            HandleFieldDragEvents.getInstance().dragOver(event);
         }));
 
         panes.forEach(p -> p.setOnDragDropped((event) -> {
-            HandleFieldDragEvents.dragDropped(event, columnIndex, rowIndex);
+            HandleFieldDragEvents.getInstance().dragDropped(event, columnIndex, rowIndex);
 
         }));
 
@@ -316,7 +325,7 @@ public class CardTableController implements Initializable {
     @FXML
     private void handleIconOnDragDropped(DragEvent event) {
 
-        HandleIconDragEvents.iconDragDropped(event, playerIcon, opponentIcon, player, opponent);
+        HandleIconDragEvents.getInstance().iconDragDropped(event, playerIcon, opponentIcon, player, opponent);
 
     }
 
@@ -497,103 +506,57 @@ public class CardTableController implements Initializable {
         });
     }
 
+    public void refreshGameState(GameStateModel gameStateModel, CardTableController tableController) throws FileNotFoundException { //param controller?
 
-    public void refreshGameState(GameStateModel gameStateModel, CardTableController tableController) { //param controller?
-        Platform.runLater(() -> {
-            try {
-                ProccesResponseData.refreshGameState(gameStateModel, tableController);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        ProccesResponseData.getInstance().refreshGameState(gameStateModel, tableController);
 
-        });
-    
-
-    
-//    public void refreshGameState(GameStateModel gameStateModel) { //param controller?
-//        Platform.runLater(() -> {
-//            try {
-//                clearFieldsClientThread();
-//                refreshDeck(gameStateModel);
-//
-//                refreshGrid(gameStateModel.getPlayerHand(), Grid.PLAYER );
-//                refreshGrid(gameStateModel.getOpponentHand(), Grid.OPPONENT);
-//                refreshGrid(gameStateModel.getFieldCards(), Grid.FIELD);
-//
-//                setPlayersClientThread(gameStateModel.getPlayers());
-//            } catch (FileNotFoundException ex) {
-//                Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//
-//        });
-//
-//    }
-//    
-//     private  void refreshDeck(GameStateModel gameStateModel ) {
-//        
-//        playerDeck.clearDeck();
-//        opponentDeck.clearDeck();
-//        playerDeck.setDeck(gameStateModel.getPlayerDeck());
-//        opponentDeck.setDeck(gameStateModel.getOpponentDeck());
-//    }
-//    
-//    private  void clearFieldsClientThread() {
-//        
-//       
-//        gridPlayer.getChildren().removeAll(gridPlayer.getChildren());
-//        gridOpponent.getChildren().removeAll(gridOpponent.getChildren());
-//
-//        ObservableList<Node> list = FXCollections.observableArrayList();
-//
-//        for (Node node : gridField.getChildrenUnmodifiable()) {
-//            if (node instanceof VBox) {
-//                list.add(node);
-//            }
-//        }
-//        gridField.getChildren().removeAll(list);
-//       
-//    }
-//    
-//   private  void refreshGrid(List<Card> cards, Grid grid) throws FileNotFoundException  {
-//
-//        switch (grid) {
-//            case PLAYER:
-//                fillGridClientThread(cards, gridPlayer);
-//                break;
-//            case OPPONENT:
-//                fillGridClientThread(cards, gridOpponent);
-//                break;
-//            case FIELD:
-//                fillGridClientThread(cards, gridField);
-//                break;
-//
-//        }
-//
-//    }
-//   
-//   private  void fillGridClientThread(List<Card> cards, GridPane grid) throws FileNotFoundException {
-//        for (Card card : cards) {
-//            card.createImage(card.getPicturePath());
-//            VBox createCard = CardUtils.createCard(card);
-//            grid.add(createCard, card.getColumnIndex(), card.getRowIndex());
-//
-//        }
-//    }
-//    
-//   private  void setPlayersClientThread(List<Player> players) throws FileNotFoundException {
-//
-//        for (Player player : players) {
-//            if (player.getName().contentEquals(PLAYER_NAME)) {
-//                player.createDefaultImage();
-//                IconUtils.modifyPlayers(player, PlayersIcon.PLAYER_ICON, playerIcon);
-//            }
-//            if (player.getName().contentEquals(OPPONENT_NAME)) {
-//                player.createDefaultImage();
-//                IconUtils.modifyPlayers(player, PlayersIcon.OPPONENT_ICON, opponentIcon);
-//            }
-//
-//        }
-//
-//    }
     }
+
+//    private void handleStartChat(ActionEvent event) {
+//
+//        Parent root;
+//        try {
+//            root = FXMLLoader.load(getClass().getClassLoader().getResource(CHAT));
+//            Stage stage = new Stage();
+//            stage.setTitle("Chat window");
+//            stage.setScene(new Scene(root, 700, 420));
+//            stage.show();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+
+    @FXML
+    private void handleStartServer(ActionEvent event) {
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getClassLoader().getResource(SERVER_CHAT));
+            Stage stage = new Stage();
+            stage.setTitle("Server window");
+            stage.setScene(new Scene(root, 700, 420));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleStartClient(ActionEvent event) {
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getClassLoader().getResource(CLIENT_CHAT));
+            Stage stage = new Stage();
+            stage.setTitle("Client window");
+            stage.setScene(new Scene(root, 700, 420));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+    }
+
 }

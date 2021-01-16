@@ -49,7 +49,6 @@
                      </font></Label>
                </children>
             </VBox>
-            <Label fx:id="lblTest" layoutX="171.0" layoutY="107.0" prefHeight="17.0" prefWidth="97.0" text="Label" />
          </children>
       </Pane>
    </bottom>
@@ -126,6 +125,12 @@
                     <items>
                       <MenuItem fx:id="miDocumentation" mnemonicParsing="false" onAction="#handleDocumentationOnAction" text="Create documentation" />
                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Chat">
+                     <items>
+                        <MenuItem fx:id="miStartServer" mnemonicParsing="false" onAction="#handleStartServer" text="Server" />
+                        <MenuItem fx:id="miStartClient" mnemonicParsing="false" onAction="#handleStartClient" text="Client" />
+                     </items>
                   </Menu>
               </menus>
             </MenuBar>

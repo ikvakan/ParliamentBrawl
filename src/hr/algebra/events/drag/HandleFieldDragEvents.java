@@ -25,8 +25,20 @@ import javafx.scene.layout.VBox;
  * @author IgorKvakan
  */
 public class HandleFieldDragEvents {
+
+    public HandleFieldDragEvents() {
+    }
     
-    public static void dragDropped(DragEvent event,int columnIndex,int rowIndex ) {
+    private static class SingletonHelper{
+        private static final HandleFieldDragEvents INSTANCE=new HandleFieldDragEvents();
+    }
+    
+    
+    public static HandleFieldDragEvents getInstance(){
+        return SingletonHelper.INSTANCE;
+    }
+    
+    public  void dragDropped(DragEvent event,int columnIndex,int rowIndex ) {
         boolean dragCompleted = false;
 
         Dragboard dragboard = event.getDragboard();
@@ -82,7 +94,7 @@ public class HandleFieldDragEvents {
     }
     
     
-        public static void dragOver(DragEvent event) {
+        public void dragOver(DragEvent event) {
 
         Dragboard dragboard = event.getDragboard();
         

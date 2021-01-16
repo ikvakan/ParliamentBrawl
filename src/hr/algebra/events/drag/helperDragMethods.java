@@ -17,7 +17,19 @@ import javafx.scene.layout.VBox;
  */
 public class helperDragMethods {
 
-    public static boolean  findParentFromNode(String parentName, DragEvent event, EventGesture eventOrigin) {
+    public helperDragMethods() {
+    }
+
+    private static class SingletonHelper{
+        private static final helperDragMethods INSTANCE=new helperDragMethods();
+    }
+    
+    public static helperDragMethods getInstance(){
+        return SingletonHelper.INSTANCE;
+    }
+    
+    
+    public  boolean  findParentFromNode(String parentName, DragEvent event, EventGesture eventOrigin) {
 
         boolean result=false;
        
@@ -34,7 +46,7 @@ public class helperDragMethods {
         return result;
     }
 
-    private static boolean getCardSourceParent(String parentName, DragEvent event) {
+    private  boolean getCardSourceParent(String parentName, DragEvent event) {
 
         boolean result=false;
         
@@ -51,7 +63,7 @@ public class helperDragMethods {
 
     }
 
-    private static boolean getCardTargetParent(String parentName, DragEvent event) {
+    private  boolean getCardTargetParent(String parentName, DragEvent event) {
         boolean result=false;
         
         Node source = (Node) event.getGestureTarget();

@@ -98,7 +98,6 @@ public class GameStateModel implements Serializable{
 
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
 
-        
         playerDeck = (List<Card>) ois.readObject();
         playerHand = (List<Card>) ois.readObject();
         opponentDeck = (List<Card>) ois.readObject();
@@ -107,4 +106,7 @@ public class GameStateModel implements Serializable{
         players=(List<Player>) ois.readObject();
     
     }
+    
+    
+
 }

@@ -26,10 +26,22 @@ import javafx.scene.layout.VBox;
  * @author IgorKvakan
  */
 public class ProccesResponseData {
+    
+    public ProccesResponseData() {
+    }
+    
+    private static class SingletonHelper{
+        private static final ProccesResponseData INSTANCE=new ProccesResponseData();
+    }
+    
+    
+    public static ProccesResponseData getInstance(){
+        return SingletonHelper.INSTANCE;
+    }
+    
 
-    public static void refreshGameState(GameStateModel gameStateModel, CardTableController tableController) throws FileNotFoundException  {
+    public void refreshGameState(GameStateModel gameStateModel, CardTableController tableController) throws FileNotFoundException  {
         
-
 
         clearFields(tableController);
         populateDeck(gameStateModel,tableController);
@@ -42,7 +54,7 @@ public class ProccesResponseData {
         
     }
 
-   private static void populateDeck(GameStateModel gameStateModel, CardTableController tableController) {
+   private  void populateDeck(GameStateModel gameStateModel, CardTableController tableController) {
         
         tableController.playerDeck.clearDeck();
         tableController.opponentDeck.clearDeck();
@@ -50,7 +62,7 @@ public class ProccesResponseData {
         tableController.opponentDeck.setDeck(gameStateModel.getOpponentDeck());
     }
     
-    private static void clearFields(CardTableController tableController) {
+    private  void clearFields(CardTableController tableController) {
         
        
         tableController.gridPlayer.getChildren().removeAll(tableController.gridPlayer.getChildren());
@@ -67,7 +79,7 @@ public class ProccesResponseData {
        
     }
     
-   private static void refreshGrid(List<Card> cards, Grid grid,CardTableController controller) throws FileNotFoundException  {
+   private  void refreshGrid(List<Card> cards, Grid grid,CardTableController controller) throws FileNotFoundException  {
 
         switch (grid) {
             case PLAYER:
@@ -84,7 +96,7 @@ public class ProccesResponseData {
 
     }
    
-   private static void fillGrid(List<Card> cards, GridPane grid) throws FileNotFoundException {
+   private  void fillGrid(List<Card> cards, GridPane grid) throws FileNotFoundException {
         for (Card card : cards) {
             card.createImage(card.getPicturePath());
             VBox createCard = CardUtils.createCard(card);
@@ -93,7 +105,7 @@ public class ProccesResponseData {
         }
     }
     
-   private static void setPlayers(List<Player> players,CardTableController controller) throws FileNotFoundException {
+   private  void setPlayers(List<Player> players,CardTableController controller) throws FileNotFoundException {
 
         for (Player player : players) {
             if (player.getName().contentEquals(controller.PLAYER_NAME)) {

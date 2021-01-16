@@ -29,17 +29,13 @@ public class GameClient extends Thread {
     private static ObjectInputStream ois;
     private static ObjectOutputStream oos;
 
-
     public GameClient(CardTableController tableController) {
         this.tableController = tableController;
 
     }
-   
+
     private static final LinkedBlockingDeque<GameStateModel> gameState = new LinkedBlockingDeque<>();
 
-//    public static void trigger(String title) {
-//        cards.add(title);
-//    }
     public static void trigger(GameStateModel gameStateModel) {
         gameState.add(gameStateModel);
     }
@@ -54,14 +50,13 @@ public class GameClient extends Thread {
         try (Socket clientSocket = new Socket(HOST, PORT)) {
 
             initIOStream(clientSocket);
-            ServerHandler serverHandler = new ServerHandler(clientSocket,tableController,ois,oos);
-            serverHandler.start();
+            DataHandler dataHandler = new DataHandler(clientSocket, tableController, ois, oos);
+            dataHandler.start();
 
             while (true) {
 
                 if (!gameState.isEmpty()) {
                     sendDataToServer();
-                    
 
                 }
 
@@ -69,25 +64,23 @@ public class GameClient extends Thread {
 
         } catch (Exception e) {
 
-            throw new RuntimeException("Client not connected to server");
-            //e.printStackTrace(); //maknuti da ne smeta jer nema konekcije
+            e.printStackTrace(); //maknuti da ne smeta dok nema konekcije
+            System.out.println("Crklo: GameClient");
+
         }
 
     }
 
-    private void sendDataToServer() throws IOException {
+    private  void sendDataToServer() throws IOException {
 
         oos.writeObject(gameState.getFirst());
-        
-        
         gameState.clear();
         oos.flush();
 
     }
 
-
     private void initIOStream(Socket clientSocket) throws IOException {
-        
+
         oos = new ObjectOutputStream(clientSocket.getOutputStream());
         ois = new ObjectInputStream(clientSocket.getInputStream());
     }

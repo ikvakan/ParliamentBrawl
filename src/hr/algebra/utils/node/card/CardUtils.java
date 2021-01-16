@@ -35,6 +35,13 @@ public class CardUtils {
     private static final String ATT_DEF = "AttDef";
 
    
+    private static class SingletonHelper{
+        private static final CardUtils INSTANCE= new CardUtils();
+    }
+    
+    public static CardUtils getInstance(){
+        return SingletonHelper.INSTANCE;
+    }
 
     public static final String DELIMITER = "/";
 
@@ -48,18 +55,22 @@ public class CardUtils {
         vBox.setAlignment(Pos.CENTER);
         vBox.setOnDragDetected((event) -> {
 
-            HandleCardDragEvents.dragDetected(event);
+            HandleCardDragEvents.getInstance().dragDetected(event);
+            
+            //HandleCardDragEvents.dragDetected(event);
 
         });
 
         vBox.setOnDragOver((event) -> {
-            HandleCardDragEvents.dragOver(event);
+            //HandleCardDragEvents.dragOver(event);
+            HandleCardDragEvents.getInstance().dragOver(event);
 
         });
 
         vBox.setOnDragDropped(event -> {
             try {
-                HandleCardDragEvents.dragDropped(event);
+                //HandleCardDragEvents.dragDropped(event);
+                HandleCardDragEvents.getInstance().dragDropped(event);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(CardUtils.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -69,7 +80,7 @@ public class CardUtils {
         });
 
         vBox.setOnDragDone(event->{
-            HandleCardDragEvents.dragDone(event);
+            HandleCardDragEvents.getInstance().dragDone(event);
         
         });
         
@@ -130,10 +141,10 @@ public class CardUtils {
     }
 
     public static VBox createCard(Card card) {
-        VBox vBox = CardUtils.createVBox();
-        Label title = CardUtils.createTitle(card.getTitle());
-        ImageView imageView = CardUtils.createImageView(card.getImage(), card.getPicturePath());
-        Label attackDefense = CardUtils.createAttDef(card.getAttack(), card.getDefense());
+        VBox vBox = createVBox();
+        Label title = createTitle(card.getTitle());
+        ImageView imageView = createImageView(card.getImage(), card.getPicturePath());
+        Label attackDefense = createAttDef(card.getAttack(), card.getDefense());
         vBox.getChildren().setAll(title, imageView, attackDefense);
         return vBox;
     }

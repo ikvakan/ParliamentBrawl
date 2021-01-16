@@ -22,51 +22,20 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private static final String TABLE = "view/Table.fxml";
-    private static final String SERVER = "view/Server.fxml";
     private static final String STAGE_TITLE = "ParliamentBrawl";
 
-    private boolean isServerStardted = false;
+  
 
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        
-//         Optional<ButtonType> result = MessageUtils.ConfirmMessage("Start", "Start server ?").showAndWait();
-//            
-//        
-//
-//        if (result.get() == ButtonType.OK) {
-//            try {
-//                Parent root = FXMLLoader.load(getClass().getResource(SERVER));
-//                Scene scene = new Scene(root, 600, 400);
-//
-//                primaryStage.setTitle(STAGE_TITLE);
-//                primaryStage.setScene(scene);
-//                primaryStage.show();
-//                isServerStardted = true;
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//       
-//        } else if (result.get()==ButtonType.CANCEL) {
-//            Parent root = FXMLLoader.load(getClass().getResource(TABLE));
-//
-//            Scene scene = new Scene(root, 1200, 800);
-//
-//            primaryStage.setTitle(STAGE_TITLE);
-//            primaryStage.setScene(scene);
-//            primaryStage.show();
-//        }
-        
-        
         Parent root = FXMLLoader.load(getClass().getResource(TABLE));
 
             Scene scene = new Scene(root, 1200, 800);
 
             primaryStage.setTitle(STAGE_TITLE);
             primaryStage.setScene(scene);
+            primaryStage.setOnCloseRequest(e ->System.exit(0));
             primaryStage.show();
 
     }
