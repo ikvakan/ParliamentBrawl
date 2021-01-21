@@ -44,7 +44,7 @@ public class ProccesResponseData {
         
 
         clearFields(tableController);
-        populateDeck(gameStateModel,tableController);
+        
         
         refreshGrid(gameStateModel.getPlayerHand(), Grid.PLAYER,tableController);
         refreshGrid(gameStateModel.getOpponentHand(), Grid.OPPONENT,tableController);
@@ -54,14 +54,7 @@ public class ProccesResponseData {
         
     }
 
-   private  void populateDeck(GameStateModel gameStateModel, CardTableController tableController) {
-        
-        tableController.playerDeck.clearDeck();
-        tableController.opponentDeck.clearDeck();
-        tableController.playerDeck.setDeck(gameStateModel.getPlayerDeck());
-        tableController.opponentDeck.setDeck(gameStateModel.getOpponentDeck());
-    }
-    
+
     private  void clearFields(CardTableController tableController) {
         
        

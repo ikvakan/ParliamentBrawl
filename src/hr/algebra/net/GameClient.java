@@ -26,8 +26,8 @@ public class GameClient extends Thread {
 
     private static CardTableController tableController;
 
-    private static ObjectInputStream ois;
-    private static ObjectOutputStream oos;
+    private  ObjectInputStream ois;
+    private  ObjectOutputStream oos;
 
     public GameClient(CardTableController tableController) {
         this.tableController = tableController;
@@ -51,6 +51,7 @@ public class GameClient extends Thread {
 
             initIOStream(clientSocket);
             DataHandler dataHandler = new DataHandler(clientSocket, tableController, ois, oos);
+            dataHandler.setDaemon(true);
             dataHandler.start();
 
             while (true) {

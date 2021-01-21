@@ -45,7 +45,7 @@ public class DataHandler extends Thread {
 
         try {
 
-            while (true) {
+            while (ois!=null) {
 
                 recieveData();
 
@@ -81,7 +81,8 @@ public class DataHandler extends Thread {
         
         Platform.runLater(() -> {
             try {
-                tableController.refreshGameState(gameStateModel, tableController);
+                tableController.refreshGameState(gameStateModel);
+                //tableController.refreshGameState(gameStateModel, tableController);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(DataHandler.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("Crklo: recievedata() DataHandler");
@@ -89,8 +90,7 @@ public class DataHandler extends Thread {
 
         });
 
-        //tableController.refreshGameState(gameStateModel,tableController);
-        // tableController.refreshGameState(gameStateModel);
+        
     }
 
 }

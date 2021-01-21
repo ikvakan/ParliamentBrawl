@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<opponentHand>
+    <card src="assets/djapic.jpg">
+        <title>Anto Đapić</title>
+        <attack>2</attack>
+        <defense>5</defense>
+        <colIndex>1</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Rojs.jpg">
+        <title>Ljubo Ćesić Rojs</title>
+        <attack>3</attack>
+        <defense>3</defense>
+        <colIndex>2</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/glavas.jpg">
+        <title>Branimir Glavaš</title>
+        <attack>4</attack>
+        <defense>2</defense>
+        <colIndex>4</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/mesic.jpg">
+        <title>Stjepan Mesić</title>
+        <attack>6</attack>
+        <defense>9</defense>
+        <colIndex>3</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+</opponentHand>

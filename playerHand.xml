@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<playerHand>
+    <card src="assets/Canjuga.jpg">
+        <title>Zlatko Canjuga</title>
+        <attack>2</attack>
+        <defense>3</defense>
+        <colIndex>3</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/kolinda.jpg">
+        <title>Kolinda</title>
+        <attack>5</attack>
+        <defense>5</defense>
+        <colIndex>2</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/mesic.jpg">
+        <title>Stjepan Mesić</title>
+        <attack>6</attack>
+        <defense>9</defense>
+        <colIndex>4</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+</playerHand>

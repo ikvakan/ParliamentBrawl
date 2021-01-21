@@ -28,9 +28,7 @@ public class Deck implements Serializable {
 
     }
 
-//    public Deck(List<Card> cards) {
-//        this.deck = cards;
-//    }
+
     @Getter(comment = "get list of cards for hand")
 
     public List<Card> getHand() {
@@ -78,7 +76,6 @@ public class Deck implements Serializable {
 
     public Card getCardForHand() {
 
-        // hand.clear();
         Card card = deck.get(deck.size() - 1);
         deck.remove(card);
 

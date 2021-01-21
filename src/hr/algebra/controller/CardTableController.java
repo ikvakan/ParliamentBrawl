@@ -21,7 +21,9 @@ import hr.algebra.model.GameStateModel;
 import hr.algebra.net.GameClient;
 
 import hr.algebra.reflection.HandleReflection;
+import hr.algebra.utils.DOMUtils;
 import hr.algebra.utils.FileUtils;
+import hr.algebra.utils.MessageUtils;
 import hr.algebra.utils.SerializationUtils;
 import hr.algebra.utils.net.ProccesResponseData;
 import hr.algebra.utils.node.icon.IconUtils;
@@ -67,7 +69,7 @@ public class CardTableController implements Initializable {
 
     private Repository repository;
 
-    GameClient gameClient;
+    private GameClient gameClient;
 
     private Player player;
     private Player opponent;
@@ -75,16 +77,15 @@ public class CardTableController implements Initializable {
     public Deck playerDeck;
     public Deck opponentDeck;
 
-    Integer columnIndex = 0;
-    Integer rowIndex = 0;
+    private Integer columnIndex = 0;
+    private Integer rowIndex = 0;
 
-    Integer lastColIndexPlayer;
-    Integer lastRowIndexPlayer;
+    private Integer lastColIndexPlayer;
+    private Integer lastRowIndexPlayer;
 
-    Integer lastColIndexOpponent;
-    Integer lastRowIndexOpponent;
-    
-    
+    private Integer lastColIndexOpponent;
+    private Integer lastRowIndexOpponent;
+
     public final String PLAYER_NAME = "Player 1";
     public final String OPPONENT_NAME = "Player 2";
 
@@ -121,12 +122,15 @@ public class CardTableController implements Initializable {
     private MenuItem miStartServer;
     @FXML
     private MenuItem miStartClient;
+    @FXML
+    private MenuItem miSaveXML;
+    @FXML
+    private MenuItem miLoadXML;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         try {
-            
 
             initClient();
             initCardRepository();
@@ -506,27 +510,12 @@ public class CardTableController implements Initializable {
         });
     }
 
-    public void refreshGameState(GameStateModel gameStateModel, CardTableController tableController) throws FileNotFoundException { //param controller?
+    public void refreshGameState(GameStateModel gameStateModel) throws FileNotFoundException { //param controller?
 
-        ProccesResponseData.getInstance().refreshGameState(gameStateModel, tableController);
+        ProccesResponseData.getInstance().refreshGameState(gameStateModel, this);
+        //ProccesResponseData.getInstance().refreshGameState(gameStateModel, tableController);
 
     }
-
-//    private void handleStartChat(ActionEvent event) {
-//
-//        Parent root;
-//        try {
-//            root = FXMLLoader.load(getClass().getClassLoader().getResource(CHAT));
-//            Stage stage = new Stage();
-//            stage.setTitle("Chat window");
-//            stage.setScene(new Scene(root, 700, 420));
-//            stage.show();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
 
     @FXML
     private void handleStartServer(ActionEvent event) {
@@ -556,7 +545,56 @@ public class CardTableController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
+    }
+
+    @FXML
+    private void handleSaveXML(ActionEvent event) {
+
+        DOMUtils.savePlayerDeck(playerDeck.getDeck());
+        DOMUtils.saveOpponentDeck(opponentDeck.getDeck());
+        DOMUtils.savePlayerHand(ChooseGrid(Grid.PLAYER));
+        DOMUtils.saveOpponentHand(ChooseGrid(Grid.OPPONENT));
+        DOMUtils.saveFieldCards(ChooseGrid(Grid.FIELD));
+        DOMUtils.savePlayer(IconUtils.getPlayerFromPane(PlayersIcon.PLAYER_ICON, playerIcon));
+        DOMUtils.saveOpponent(IconUtils.getPlayerFromPane(PlayersIcon.OPPONENT_ICON, opponentIcon));
+        MessageUtils.ShowMessage("DOM", "XML document saved");
+    }
+
+    @FXML
+    private void handleLoadXML(ActionEvent event) {
+
+        try {
+            clearFields();
+            populateDeckAfterXMLLoad();
+
+            fillGridAfterLoad(DOMUtils.loadPlayerHand(), Grid.PLAYER);
+            fillGridAfterLoad(DOMUtils.loadOpponentHand(), Grid.OPPONENT);
+            fillGridAfterLoad(DOMUtils.loadFieldCards(), Grid.FIELD);
+            
+            setPlayerXML(DOMUtils.loadPlayer(), PlayersIcon.PLAYER_ICON, playerIcon);
+            setPlayerXML(DOMUtils.loadOpponent(), PlayersIcon.OPPONENT_ICON, opponentIcon);
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private void populateDeckAfterXMLLoad() {
+        playerDeck.clearDeck();
+        opponentDeck.clearDeck();
+        playerDeck.setDeck(DOMUtils.loadPlayerDeck());
+        opponentDeck.setDeck(DOMUtils.loadOpponentDeck());
+    }
+
+    private void setPlayerXML(Player player, PlayersIcon playersIcon, VBox vBox) {
+        try {
+            player.createDefaultImage();
+            IconUtils.modifyPlayers(player, playersIcon, vBox);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

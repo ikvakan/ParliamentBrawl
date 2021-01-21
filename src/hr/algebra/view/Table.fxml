@@ -132,6 +132,12 @@
                         <MenuItem fx:id="miStartClient" mnemonicParsing="false" onAction="#handleStartClient" text="Client" />
                      </items>
                   </Menu>
+                  <Menu mnemonicParsing="false" text="XML">
+                     <items>
+                        <MenuItem fx:id="miSaveXML" mnemonicParsing="false" onAction="#handleSaveXML" text="Save XML" />
+                        <MenuItem fx:id="miLoadXML" mnemonicParsing="false" onAction="#handleLoadXML" text="Load XML" />
+                     </items>
+                  </Menu>
               </menus>
             </MenuBar>
          </top>

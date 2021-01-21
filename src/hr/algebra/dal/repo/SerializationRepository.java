@@ -133,5 +133,39 @@ public class SerializationRepository implements Serializable {
 
         return INSTANCE;
     }
+    
+    public void swapPlayerDeck(List<Card> deck){
+        this.playerDeck.clear();
+        this.playerDeck.addAll(deck);
+    }
+    
+    public void swapOpponentDeck(List<Card> deck){
+        this.opponentDeck.clear();
+        this.opponentDeck.addAll(deck);
+    }
+    
+    public void swapPlayerHand(List<Card> deck){
+        this.playerHand.clear();
+        this.playerHand.addAll(deck);
+    }
+    
+    public void swapOpponentHand(List<Card> deck){
+        this.opponentHand.clear();
+        this.opponentHand.addAll(deck);
+    }
+    
+    public void swapFieldCards(List<Card> cards){
+        this.fieldCards.clear();
+        this.fieldCards.addAll(cards);
+               
+    }
+    
+    public void swapPlayers(List<Player> players){
+        this.players.clear();
+        this.players.addAll(players);
+    }
+
+    
+    
 
 }

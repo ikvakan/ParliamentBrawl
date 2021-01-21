@@ -57,6 +57,20 @@ public class Card implements Serializable {
         
     }
 
+    public Card(String title, int attack, int defense, String picturePath, int columnIndex, int rowIndex) throws FileNotFoundException {
+        this.title = title;
+        this.attack = attack;
+        this.defense = defense;
+        this.picturePath = picturePath;
+        this.columnIndex = columnIndex;
+        this.rowIndex = rowIndex;
+        
+        createImage(picturePath);
+    }
+    
+    
+    
+
     public void createImage(String path) throws FileNotFoundException {
 
         this.image = new Image(new FileInputStream(SRC_DIR + File.separator + path));

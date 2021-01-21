@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<opponents>
+    <player>
+        <name>Player 2</name>
+        <health>16</health>
+    </player>
+</opponents>

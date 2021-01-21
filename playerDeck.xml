@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<playerDeck>
+    <card src="assets/Mate_Granic.jpg">
+        <title>Mate Granić</title>
+        <attack>2</attack>
+        <defense>2</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Zoki.jpeg">
+        <title>Zoki</title>
+        <attack>6</attack>
+        <defense>6</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/plenkovic.jpg">
+        <title>Plenky</title>
+        <attack>6</attack>
+        <defense>6</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/kosor.jpg">
+        <title>Jadranka Kosor</title>
+        <attack>2</attack>
+        <defense>4</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Matulovic-Dropulic.jpg">
+        <title>Marina Matulović-Dropulić</title>
+        <attack>2</attack>
+        <defense>2</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/LJERKA MINTAS HODAK.jpg">
+        <title>Ljerka Hodak</title>
+        <attack>2</attack>
+        <defense>2</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Opacic.jpeg">
+        <title>Milanka Opačić</title>
+        <attack>3</attack>
+        <defense>3</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Pernar.jpg">
+        <title>Pernar</title>
+        <attack>6</attack>
+        <defense>2</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/V_pusic.jpg">
+        <title>Vesna Pusić</title>
+        <attack>4</attack>
+        <defense>4</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Sanader.jpeg">
+        <title>Ivo "Ćaća" Sanader</title>
+        <attack>7</attack>
+        <defense>3</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Vladimir_Seks.jpg">
+        <title>Vladimir Šeks</title>
+        <attack>5</attack>
+        <defense>7</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Vesna-Skare-Ozbolt.jpg">
+        <title>Vesna Škare-Ožbolt</title>
+        <attack>3</attack>
+        <defense>3</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/zdravko-tomac.jpg">
+        <title>Zdravko Tomac</title>
+        <attack>2</attack>
+        <defense>4</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Tuđman.jpg">
+        <title>Franjo Tuđman</title>
+        <attack>10</attack>
+        <defense>10</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Pupovac.jpg">
+        <title>Milorad Pupovac</title>
+        <attack>2</attack>
+        <defense>2</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/račan.jpg">
+        <title>Ivica Račan</title>
+        <attack>5</attack>
+        <defense>8</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/crocop.jpeg">
+        <title>CroCop</title>
+        <attack>8</attack>
+        <defense>6</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Đurđa_Adlešič.jpg">
+        <title>Đurđa Adlešić</title>
+        <attack>3</attack>
+        <defense>2</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Žalac.jpg">
+        <title>Gabrijela Žalac</title>
+        <attack>1</attack>
+        <defense>1</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+</playerDeck>

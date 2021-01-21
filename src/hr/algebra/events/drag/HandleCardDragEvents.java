@@ -35,30 +35,25 @@ import javafx.scene.layout.VBox;
  */
 public class HandleCardDragEvents {
 
-   
-    
     private HandleCardDragEvents() {
     }
 
-    private static class SingletonHelper{
-        private static final HandleCardDragEvents INSTANCE=new HandleCardDragEvents();
+    private static class SingletonHelper {
+
+        private static final HandleCardDragEvents INSTANCE = new HandleCardDragEvents();
     }
-    
-    public static HandleCardDragEvents getInstance(){
+
+    public static HandleCardDragEvents getInstance() {
         return SingletonHelper.INSTANCE;
     }
-    
+
     private static CardTableController controller;
-    
 
     //private static GameStateModel gameStateModel= new GameStateModel();
-    public  void dragDone(DragEvent event) {
+    public void dragDone(DragEvent event) {
 
         //System.out.println("test");
-        
         TransferMode tm = event.getTransferMode();
-      
-        controller = GameClient.getController();
 
         if (tm == TransferMode.MOVE) {
 
@@ -66,7 +61,6 @@ public class HandleCardDragEvents {
 
             if (dragboard.hasContent(CARD)) {
 
-             
                 dataTransfer();
 
             }
@@ -77,12 +71,14 @@ public class HandleCardDragEvents {
 
     }
 
-    private  void dataTransfer() {
+    private void dataTransfer() {
+
+        controller = GameClient.getController();
 
         GameStateModel gameStateModel = new GameStateModel();
 
-        gameStateModel.setPlayerDeck(controller.playerDeck.getDeck());
-        gameStateModel.setOpponentDeck(controller.opponentDeck.getDeck());
+       // gameStateModel.setPlayerDeck(controller.playerDeck.getDeck());
+      //  gameStateModel.setOpponentDeck(controller.opponentDeck.getDeck());
 
         gameStateModel.setPlayerHand(controller.ChooseGrid(Grid.PLAYER));
         gameStateModel.setOpponentHand(controller.ChooseGrid(Grid.OPPONENT));
@@ -92,11 +88,12 @@ public class HandleCardDragEvents {
         gameStateModel.addPlayer(IconUtils.getPlayerFromPane(PlayersIcon.OPPONENT_ICON, controller.opponentIcon));
 
         GameClient.trigger(gameStateModel);
+        
 
-       
+        
     }
 
-    public  void dragOver(DragEvent event) {
+    public void dragOver(DragEvent event) {
 
         Dragboard db = event.getDragboard();
 
@@ -116,7 +113,7 @@ public class HandleCardDragEvents {
 
     }
 
-    public  void dragDetected(MouseEvent event) {
+    public void dragDetected(MouseEvent event) {
 
         VBox source = (VBox) event.getSource();
 
@@ -141,7 +138,7 @@ public class HandleCardDragEvents {
 
     }
 
-    public  void dragDropped(DragEvent event) throws FileNotFoundException, IOException {
+    public void dragDropped(DragEvent event) throws FileNotFoundException, IOException {
 
         boolean dragCompleted = false;
         Dragboard dragboard = event.getDragboard();
@@ -208,7 +205,7 @@ public class HandleCardDragEvents {
 
     }
 
-    private  void removeAttacker(GridPane parent, VBox source, VBox target, Card defender) {
+    private void removeAttacker(GridPane parent, VBox source, VBox target, Card defender) {
 
         parent.getChildren().remove(source);
 
@@ -223,7 +220,7 @@ public class HandleCardDragEvents {
 
     }
 
-    private  void removeDefender(GridPane parent, VBox source, VBox target, Card attacker) {
+    private void removeDefender(GridPane parent, VBox source, VBox target, Card attacker) {
 
         parent.getChildren().remove(target);
 
@@ -238,7 +235,7 @@ public class HandleCardDragEvents {
 
     }
 
-    private  void removeBothCard(GridPane parent, VBox source, VBox target) {
+    private void removeBothCard(GridPane parent, VBox source, VBox target) {
 
         parent.getChildren().remove(source);
         parent.getChildren().remove(target);
@@ -246,7 +243,7 @@ public class HandleCardDragEvents {
         setDragOverToAny(parent);
     }
 
-    private  void modifyCards(GridPane parent, VBox source, VBox target, Card attacker, Card defender) {
+    private void modifyCards(GridPane parent, VBox source, VBox target, Card attacker, Card defender) {
 
         Integer attackerColIndex = getColumnIndex(source);
         Integer AttackerRowIndex = getRowIndex(source);

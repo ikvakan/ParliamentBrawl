@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="719.0" style="-fx-background-color: yellow;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.controller.ClientChatController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="719.0" style="-fx-background-color: blue;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.controller.ClientChatController">
    <children>
       <TextField fx:id="tfMessage" layoutX="60.0" layoutY="35.0" onKeyReleased="#send" prefHeight="25.0" prefWidth="428.0" promptText="Insert message" />
       <ScrollPane fx:id="spContainer" hbarPolicy="NEVER" layoutX="60.0" layoutY="77.0" prefHeight="285.0" prefWidth="630.0" vvalue="1.0">
