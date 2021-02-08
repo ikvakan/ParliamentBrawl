@@ -49,10 +49,10 @@ public class HandleCardDragEvents {
 
     private static CardTableController controller;
 
-    //private static GameStateModel gameStateModel= new GameStateModel();
+    
     public void dragDone(DragEvent event) {
 
-        //System.out.println("test");
+        
         TransferMode tm = event.getTransferMode();
 
         if (tm == TransferMode.MOVE) {
@@ -77,8 +77,7 @@ public class HandleCardDragEvents {
 
         GameStateModel gameStateModel = new GameStateModel();
 
-       // gameStateModel.setPlayerDeck(controller.playerDeck.getDeck());
-      //  gameStateModel.setOpponentDeck(controller.opponentDeck.getDeck());
+       
 
         gameStateModel.setPlayerHand(controller.ChooseGrid(Grid.PLAYER));
         gameStateModel.setOpponentHand(controller.ChooseGrid(Grid.OPPONENT));

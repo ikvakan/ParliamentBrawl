@@ -133,4 +133,18 @@
         <colIndex>0</colIndex>
         <rowIndex>0</rowIndex>
     </card>
+    <card src="assets/mesic.jpg">
+        <title>Stjepan Mesić</title>
+        <attack>6</attack>
+        <defense>9</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/kolinda.jpg">
+        <title>Kolinda</title>
+        <attack>5</attack>
+        <defense>5</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
 </playerDeck>

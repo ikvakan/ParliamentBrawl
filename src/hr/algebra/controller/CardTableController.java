@@ -558,7 +558,7 @@ public class CardTableController implements Initializable {
         DOMUtils.saveFieldCards(ChooseGrid(Grid.FIELD));
         DOMUtils.savePlayer(IconUtils.getPlayerFromPane(PlayersIcon.PLAYER_ICON, playerIcon));
         DOMUtils.saveOpponent(IconUtils.getPlayerFromPane(PlayersIcon.OPPONENT_ICON, opponentIcon));
-        MessageUtils.ShowMessage("DOM", "XML document saved");
+        MessageUtils.ShowMessage("DOM", "XML document saved").show();
     }
 
     @FXML

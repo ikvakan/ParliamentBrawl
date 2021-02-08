@@ -24,7 +24,7 @@ public class MessageUtils {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setContentText(content);
-        alert.show();
+        
         return alert;
     }
 

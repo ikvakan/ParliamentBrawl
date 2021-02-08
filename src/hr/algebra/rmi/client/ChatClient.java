@@ -21,13 +21,13 @@ import java.util.logging.Logger;
  * @author IgorKvakan
  */
 public class ChatClient {
-      private static final String SERVER_NAME = "Server";
+      
     private static final String RMI_CLIENT = "client";
     private static final String RMI_SERVER = "server";
     private static final int REMOTE_PORT = 1099;
     private static final int RANDOM_PORT_HINT = 0;
 
-    private static final String RMI_URL = "rmi://localhost:1099";
+    //private static final String RMI_URL = "rmi://localhost:1099";
 
  
     private RemoteService client;

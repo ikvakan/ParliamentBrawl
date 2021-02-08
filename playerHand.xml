@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <playerHand>
+    <card src="assets/Drazen_Budisa.jpg">
+        <title>Dražen Budiša</title>
+        <attack>3</attack>
+        <defense>2</defense>
+        <colIndex>0</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/djapic.jpg">
+        <title>Anto Đapić</title>
+        <attack>2</attack>
+        <defense>5</defense>
+        <colIndex>1</colIndex>
+        <rowIndex>0</rowIndex>
+    </card>
     <card src="assets/Canjuga.jpg">
         <title>Zlatko Canjuga</title>
         <attack>2</attack>
@@ -7,17 +21,10 @@
         <colIndex>3</colIndex>
         <rowIndex>0</rowIndex>
     </card>
-    <card src="assets/kolinda.jpg">
-        <title>Kolinda</title>
-        <attack>5</attack>
-        <defense>5</defense>
-        <colIndex>2</colIndex>
-        <rowIndex>0</rowIndex>
-    </card>
-    <card src="assets/mesic.jpg">
-        <title>Stjepan Mesić</title>
-        <attack>6</attack>
-        <defense>9</defense>
+    <card src="assets/glavas.jpg">
+        <title>Branimir Glavaš</title>
+        <attack>4</attack>
+        <defense>2</defense>
         <colIndex>4</colIndex>
         <rowIndex>0</rowIndex>
     </card>

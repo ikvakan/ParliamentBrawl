@@ -16,7 +16,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
-import javax.sound.midi.Soundbank;
 
 /**
  *
@@ -53,13 +52,9 @@ public class DataHandler extends Thread {
 
         } catch (Exception e) {
 
-//            try {
-//                ois.close();
-//            } catch (IOException ex) {
-//                Logger.getLogger(DataHandler.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+
             e.printStackTrace();
-            System.out.println("Crklo: recievedata()");
+           
 
         } finally {
             try {
@@ -67,7 +62,7 @@ public class DataHandler extends Thread {
                 ois.close();
             } catch (IOException ex) {
                 Logger.getLogger(DataHandler.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("Crklo: DataHandler mainThread");
+                
 
             }
         }
@@ -82,10 +77,10 @@ public class DataHandler extends Thread {
         Platform.runLater(() -> {
             try {
                 tableController.refreshGameState(gameStateModel);
-                //tableController.refreshGameState(gameStateModel, tableController);
+                
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(DataHandler.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("Crklo: recievedata() DataHandler");
+                
             }
 
         });

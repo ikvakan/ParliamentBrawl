@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <fieldCards>
-    <card src="assets/kolinda.jpg">
-        <title>Kolinda</title>
-        <attack>5</attack>
-        <defense>5</defense>
+    <card src="assets/Drazen_Budisa.jpg">
+        <title>Dražen Budiša</title>
+        <attack>3</attack>
+        <defense>2</defense>
         <colIndex>0</colIndex>
         <rowIndex>0</rowIndex>
+    </card>
+    <card src="assets/Rojs.jpg">
+        <title>Ljubo Ćesić Rojs</title>
+        <attack>3</attack>
+        <defense>3</defense>
+        <colIndex>1</colIndex>
+        <rowIndex>1</rowIndex>
     </card>
     <card src="assets/glavas.jpg">
         <title>Branimir Glavaš</title>
         <attack>4</attack>
         <defense>2</defense>
         <colIndex>2</colIndex>
-        <rowIndex>1</rowIndex>
-    </card>
-    <card src="assets/Rojs.jpg">
-        <title>Ljubo Ćesić Rojs</title>
-        <attack>3</attack>
-        <defense>1</defense>
-        <colIndex>1</colIndex>
-        <rowIndex>1</rowIndex>
-    </card>
-    <card src="assets/djapic.jpg">
-        <title>Anto Đapić</title>
-        <attack>2</attack>
-        <defense>5</defense>
-        <colIndex>0</colIndex>
-        <rowIndex>1</rowIndex>
+        <rowIndex>0</rowIndex>
     </card>
 </fieldCards>

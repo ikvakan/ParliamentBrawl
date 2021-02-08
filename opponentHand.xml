@@ -14,17 +14,10 @@
         <colIndex>2</colIndex>
         <rowIndex>0</rowIndex>
     </card>
-    <card src="assets/glavas.jpg">
-        <title>Branimir Glavaš</title>
-        <attack>4</attack>
-        <defense>2</defense>
-        <colIndex>4</colIndex>
-        <rowIndex>0</rowIndex>
-    </card>
-    <card src="assets/mesic.jpg">
-        <title>Stjepan Mesić</title>
-        <attack>6</attack>
-        <defense>9</defense>
+    <card src="assets/Canjuga.jpg">
+        <title>Zlatko Canjuga</title>
+        <attack>2</attack>
+        <defense>3</defense>
         <colIndex>3</colIndex>
         <rowIndex>0</rowIndex>
     </card>

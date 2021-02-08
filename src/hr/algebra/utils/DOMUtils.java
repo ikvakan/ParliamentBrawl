@@ -8,6 +8,7 @@ package hr.algebra.utils;
 import hr.algebra.model.Card;
 import hr.algebra.model.Player;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +144,6 @@ public class DOMUtils {
             Transformer transformer = factory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-            //transformer.transform(new DOMSource(document), new StreamResult(System.out));
             transformer.transform(new DOMSource((Node) document), new StreamResult(new File(fileName)));
         } catch (TransformerConfigurationException ex) {
             Logger.getLogger(DOMUtils.class.getName()).log(Level.SEVERE, null, ex);
@@ -307,7 +307,7 @@ public class DOMUtils {
         return document;
     }
 
-    private static Card processCardNode(Element element) {
+    private static Card processCardNode(Element element) throws FileNotFoundException {
         return new Card(
                 element.getElementsByTagName("title").item(0).getTextContent(),
                 Integer.valueOf(element.getElementsByTagName("attack").item(0).getTextContent()),

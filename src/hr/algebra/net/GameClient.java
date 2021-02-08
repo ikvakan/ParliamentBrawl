@@ -45,7 +45,7 @@ public class GameClient extends Thread {
     }
 
     @Override
-    public void run() { // ispisuje podatke koje dobia od handlera na kontroler
+    public void run() { 
 
         try (Socket clientSocket = new Socket(HOST, PORT)) {
 
@@ -65,8 +65,8 @@ public class GameClient extends Thread {
 
         } catch (Exception e) {
 
-            e.printStackTrace(); //maknuti da ne smeta dok nema konekcije
-            System.out.println("Crklo: GameClient");
+            //e.printStackTrace(); 
+            
 
         }
 

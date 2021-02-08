@@ -39,7 +39,9 @@ public class HandleReflection {
                 String className = fileName.substring(0, fileName.indexOf("."));
 
                 classAndMemebersInfo
+                        .append("<h1>")
                         .append(className)
+                        .append("</h1>")
                         .append(System.lineSeparator());
 
                 try {
@@ -48,15 +50,18 @@ public class HandleReflection {
                 } catch (ClassNotFoundException e) {
                     Logger.getLogger(CardTableController.class.getName()).log(Level.SEVERE, null, e);
                 }
-                
+
                 classAndMemebersInfo
                         .append(System.lineSeparator())
+                        .append(System.lineSeparator())
+                        .append("</ul>")
+                        .append(System.lineSeparator())
                         .append(System.lineSeparator());
-                
+
             });
 
             writer.write(classAndMemebersInfo.toString());
-            
+
             MessageUtils.ShowMessage("Documentation", "Documentation created").showAndWait();
 
         } catch (IOException e) {

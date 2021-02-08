@@ -22,7 +22,7 @@ import javafx.scene.image.Image;
 public class Card implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    //public static final DataFormat CARD = new DataFormat("Card");
+    
 
     private String title;
     private int attack;
